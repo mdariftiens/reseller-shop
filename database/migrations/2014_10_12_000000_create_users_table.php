@@ -16,10 +16,16 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('mobile')->unique();
+            $table->string('code')->nullable();
+            $table->timestamp('code_expire_time')->nullable();
+            $table->enum("type",['admin','manager','delivery-man','customer','subscriber'])->default('customer');
+            $table->string('email')->unique()->nullable();
+            $table->boolean('is_account_verified')->default(0);
+            $table->timestamp('account_verified_at')->nullable();
+            $table->boolean('is_blocked')->default(0);
+            $table->timestamp('blocked_at')->nullable();
+            $table->unsignedBigInteger('blocked_by_user_id')->nullable();
             $table->timestamps();
         });
     }
