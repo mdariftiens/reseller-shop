@@ -22,12 +22,16 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $types = ['admin','manager','delivery-man','customer','subscriber'];
+
+        $boolValue = (bool) rand(0,1);
+
         return [
             'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'mobile' => $this->faker->unique()->phoneNumber,
+            'type' => $types[rand(0,4)],
+            'is_account_verified' => $boolValue,
+            'enabled' => $boolValue,
         ];
     }
 }
