@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(20)->create();
         \App\Models\Cat::factory(100)->create();
         \App\Models\Collection::factory(10)->create();
 
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             BusinessCategorySeed::class,
             ShopSettingSeeder::class,
             ProductSeeder::class,
-
+            OrderSeeder::class,
         ]);
     }
 }
