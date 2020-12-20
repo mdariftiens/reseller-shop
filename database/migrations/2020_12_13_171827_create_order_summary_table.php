@@ -17,8 +17,9 @@ class CreateOrderSummaryTable extends Migration
         Schema::create('order_summary', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
-            $table->float('original_original_price')->default(0);
-            $table->float('original_selling_price')->default(0);
+            $table->float('original_price_total')->default(0);
+            $table->float('selling_price_total')->default(0);
+            $table->float('profit_total')->default(0);
 
             $table->timestamps();
 
