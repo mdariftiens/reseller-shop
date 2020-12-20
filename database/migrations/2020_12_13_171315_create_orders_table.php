@@ -21,6 +21,11 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('created_by_user_id');
             $table->unsignedBigInteger('updated_by_user_id');
 
+            $table->float('original_price_total')->default(0);
+            $table->float('selling_price_total')->default(0);
+            $table->float('profit_total')->default(0);
+            $table->unsignedInteger('no_of_product')->default(0);
+
             $table->timestamps();
             $table->softDeletes();
 
