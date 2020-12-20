@@ -13,7 +13,7 @@ class CreateBonusTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('bonus_type', function (Blueprint $table) {
+        Schema::create('bonus_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('enabled')->default(true);

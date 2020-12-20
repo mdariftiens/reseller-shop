@@ -25,11 +25,11 @@ class CreateBonusTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('bonus_type_id')->references('id')->on('bonus_types');
             $table->foreign(['customer_user_id'])->references('id')->on('users');
             $table->foreign(['created_by_user_id'])->references('id')->on('users');
             $table->foreign(['updated_by_user_id'])->references('id')->on('users');
 
-            $table->foreign(['bonus_type_id'])->references('id')->on('bonus_type');
         });
     }
 
