@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             NoteSeeder::class,
             BonusTypeNBonusSeeder::class,
             PaidamountSeeder::class,
+            UserSeeder::class,
+
         ]);
     }
 }
