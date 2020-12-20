@@ -16,8 +16,8 @@ class CreatePaidamountTable extends Migration
         Schema::create('paidamount', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_user_id');
-            $table->enum('type',['order', 'parcel-order'])->default('order');
-            $table->text('note');
+            $table->enum('method',['bKash', 'Bank'])->default('bKash');
+            $table->text('note')->nullable();
             $table->float('amount');
             $table->unsignedBigInteger('created_by_user_id');
             $table->unsignedBigInteger('updated_by_user_id');
