@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderShipping;
-use App\Models\OrderSummary;
 use App\Models\Product;
 use App\Models\User;
 use Faker\Factory;
@@ -42,6 +41,7 @@ class OrderSeeder extends Seeder
             $originalPriceTotal = 0;
             $sellingPriceTotal = 0;
             $profitTotal = 0;
+            $noOfProduct = $products->count();
 
             foreach ( $products as $product){
 
@@ -64,12 +64,11 @@ class OrderSeeder extends Seeder
                 ]);
             }
 
-            OrderSummary::create([
-                'order_id' => $order->id,
-                'original_price_total' => $originalPriceTotal,
-                'selling_price_total' => $sellingPriceTotal,
-                'profit_total' => $profitTotal,
-            ]);
+            $order->original_price_total = $originalPriceTotal;
+            $order->selling_price_total = $sellingPriceTotal;
+            $order->profit_total = $profitTotal;
+            $order->no_of_product = $noOfProduct;
+            $order->save();
 
             OrderShipping::create([
                 'order_id' => $order->id,
