@@ -24,12 +24,11 @@ class CollectionFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->words(3, true);
-        $slug = Str::slug($name);
+        $name = $this->faker->words(5, true);
         $userId = User::inRandomOrder()->first()->id;
+
         return [
             'name' => $name,
-            'slug' => $slug,
             'description' => $this->faker->paragraph,
             'created_by_user_id' => $userId,
             'updated_by_user_id' => $userId

@@ -22,12 +22,14 @@ class CreateProductsTable extends Migration
             $table->float('offer_price')->default(0);
             $table->boolean('enabled')->default(true);
             $table->integer('delivery_within_days')->default(3);
+            $table->unsignedBigInteger('collection_id');
             $table->unsignedBigInteger('created_by_user_id');
             $table->unsignedBigInteger('updated_by_user_id');
 
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('collection_id')->references('id')->on('collections');
             $table->foreign('created_by_user_id')->references('id')->on('users');
             $table->foreign('updated_by_user_id')->references('id')->on('users');
         });

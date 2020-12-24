@@ -24,13 +24,11 @@ class CatFactory extends Factory
     public function definition()
     {
         $name = $this->faker->words(3, true);
-        $slug = Str::slug($name);
         $userId = User::inRandomOrder()->first()->id;
         $parent_id = rand(1, 5);
 
         return [
             'name' => $name,
-            'slug' => $slug,
             'parent_id' => $parent_id,
             'description' => $this->faker->paragraph,
             'created_by_user_id' => $userId,
