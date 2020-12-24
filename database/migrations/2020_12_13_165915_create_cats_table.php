@@ -18,7 +18,6 @@ class CreateCatsTable extends Migration
         Schema::create('cats', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('slug')->unique();
             $table->unsignedBigInteger('parent_id')->nullable()->default(1);
             $table->boolean('enabled')->default(true);
             $table->text('description')->nullable();

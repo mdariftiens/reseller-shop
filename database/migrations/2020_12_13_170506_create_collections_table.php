@@ -18,7 +18,6 @@ class CreateCollectionsTable extends Migration
         Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('slug')->unique();
             $table->boolean('enabled')->default(true);
             $table->text('description')->nullable();
             $table->integer('no_of_products')->default(0);
