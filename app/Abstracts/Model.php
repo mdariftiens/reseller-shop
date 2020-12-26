@@ -30,7 +30,7 @@ abstract class Model extends Eloquent
      *
      * @return Builder
      */
-    public function scopeCollect($query, $sort = 'name')
+    public function scopeCollect($query, $sort = 'id')
     {
         $request = request();
 
