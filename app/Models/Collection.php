@@ -6,5 +6,19 @@ use App\Abstracts\Model;
 
 class Collection extends Model
 {
+    protected $fillable = [
+        'name',
+        'enabled',
+        'description',
+        'created_by_user_id',
+        'updated_by_user_id'
+    ];
 
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = $name;
+        $this->attributes['created_by_user_id'] = 3;
+        $this->attributes['updated_by_user_id'] = 3;
+
+    }
 }
