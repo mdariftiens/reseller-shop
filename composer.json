@@ -20,10 +20,12 @@
         "laravelcollective/html": "^6.2",
         "lorisleiva/laravel-search-string": "^1.0",
         "monooso/unobserve": "^3.0",
+        "nesbot/carbon": "^2.43",
         "plank/laravel-mediable": "^5.0",
         "spatie/laravel-permission": "^3.18"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^0.0.5",
