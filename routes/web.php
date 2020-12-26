@@ -17,7 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::middleware('auth',
+    function (){
+        Route::get('/home', [App\Http\Controllers\Backend\DashboardController::class, 'index'])->name('home');
+        Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
+        Route::get('/test', function (){
+
+        });
+
+    });
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('collection', App\Http\Controllers\Backend\CollectionController::class);
+Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
+Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
