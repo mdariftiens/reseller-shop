@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Abstracts\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrderDetail extends Model
 {
@@ -16,4 +17,9 @@ class OrderDetail extends Model
         'selling_price',
         'profit',
     ];
+
+    public function product(): HasOne
+    {
+        return $this->hasOne(Product::class,'id','product_id');
+    }
 }
