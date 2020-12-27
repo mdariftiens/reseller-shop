@@ -34,6 +34,15 @@ class Cat extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    public static function getEnabledItemForDropdown(){
+
+        return self::select('id', 'name')
+            ->enabled()
+            ->orderBy('name')
+            ->pluck('name','id')
+            ->toArray();
+    }
+
     public static function buildTree(){
         $tree = [];
         $categories = self::with('parent','children')
