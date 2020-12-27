@@ -33,6 +33,7 @@ class ProductSeeder extends Seeder
 
             $product = Product::create([
                 'name' => $name,
+                'code' => $faker->unique()->postcode,
                 'description' => $faker->paragraphs(5, true),
                 'disclaimer' => $faker->paragraphs(2, true),
                 'regular_price' => $regularPrice,
