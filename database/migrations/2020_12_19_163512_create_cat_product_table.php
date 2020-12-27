@@ -19,6 +19,7 @@ class CreateCatProductTable extends Migration
             $table->foreignId('product_id')->constrained();
 
             $table->timestamps();
+            $table->softDeletes();
 
         });
     }
