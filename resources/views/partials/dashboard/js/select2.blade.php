@@ -13,4 +13,9 @@
     .select2-selection__choice {
         color: #000;
     }
+
+    .select2-container--default
+    .select2-selection--single {
+        height: 35px;
+    }
 </style>
