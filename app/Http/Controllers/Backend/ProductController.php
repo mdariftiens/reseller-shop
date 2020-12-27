@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Abstracts\Http\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Cat;
+use App\Models\CatProduct;
 use App\Models\Collection;
 use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
@@ -133,5 +134,15 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product.index');
+    }
+
+    public function searchByCatId(int $category_id){
+            $category =  Cat::with('products')->where('id', $category_id)->first();
+            if ( $category ){
+                return $category->products;
+            }
+            else{
+                return response()->json(['message'=>'Product Not Found'], 400);
+            }
     }
 }
