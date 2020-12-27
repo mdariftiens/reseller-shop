@@ -21,6 +21,7 @@ class CreateOrderShippingTable extends Migration
             $table->string('optional_address')->nullable();
             $table->string('mobile_number');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('order_id')->references('id')->on('orders');
 

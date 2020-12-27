@@ -23,6 +23,7 @@ class CreateOrderdetailTable extends Migration
             $table->float('selling_price')->default(0);
             $table->float('profit')->default(0);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('product_id')->references('id')->on('products');
