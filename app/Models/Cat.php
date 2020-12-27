@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Abstracts\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cat extends Model
@@ -24,6 +25,10 @@ class Cat extends Model
 
     }
 
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class );
+    }
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
