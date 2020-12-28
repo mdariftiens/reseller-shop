@@ -64,7 +64,7 @@ class OrderSeeder extends Seeder
                 ]);
             }
 
-            $order->original_price_total = $originalPriceTotal;
+            $order->offer_price_total = $originalPriceTotal;
             $order->selling_price_total = $sellingPriceTotal;
             $order->profit_total = $profitTotal;
             $order->no_of_product = $noOfProduct;
