@@ -80,8 +80,8 @@ class FormControlProvider extends ServiceProvider
             'value'=>[],
             'defaultValue'=>null,
             'label'=>'',
-            'icon'=> null,
             'attributes' => [],
+            'icon'=> null,
             'col' => 'col-md-6',
         ]);
 
