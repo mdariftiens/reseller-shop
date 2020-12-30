@@ -92,7 +92,7 @@ class OrderController extends Controller
     public function edit( $id )
     {
 
-        $order = Order::with('orderDetail','notes','orderShipping','deliveryMan','createdBy', 'orderDetail.product')
+        $order = Order::with('notes','orderShipping','deliveryMan','createdBy', 'orderDetails.product')
             ->where('id', $id)
             ->first();
 

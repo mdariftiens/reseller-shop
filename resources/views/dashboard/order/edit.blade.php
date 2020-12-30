@@ -16,135 +16,178 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    Select Category
+                        <div class="first-step" style="display: none; width: 100%;">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Select Category
+                                        </div>
+                                        <div class="card-body">
+
+                                            {{ Form::select('category',array_merge(['*'=>'All'],$categories) ,null,['class'=>'form-control select2']) }}
+                                            <br>
+                                            <br>
+                                            <ul class="list-group product-list-group" style="height: 600px; overflow-y: scroll">
+                                                @foreach($products as $product)
+                                                    <li class="list-group-item">
+                                                        <div class="row">
+                                                            <div class="col-md-4 item-image">
+                                                                <img class="image img-fluid" src="https://dummyimage.com/600x400/000/fff" alt="">
+                                                            </div>
+
+                                                            <div class="col-md-8 item-data" >
+
+                                                                Name : {{ $product->name }} <br>
+                                                                Code : {{ $product->code }} <br>
+                                                                Regular Price: {{ $product->regular_price }} <br>
+                                                                Offer Price: {{ $product->offer_price}} <br>
+
+                                                                <button type="button" name="button" class="btn btn-success btn-sm btn-add" title="Add To Order"
+                                                                        data-id = "{{ $product->id }}"
+                                                                        data-name = "{{ $product->name }}"
+                                                                        data-code = "{{ $product->code }}"
+                                                                        data-image = "{{ 'https://dummyimage.com/600x400/000/fff' }}"
+                                                                        data-regular_price = "{{ $product->regular_price }}"
+                                                                        data-offer_price = "{{ $product->offer_price }}"
+                                                                > <i class="fa fa-plus"></i> Add</button>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div class="card-body">
 
-                                    {{ Form::select('category',array_merge(['*'=>'All'],$categories) ,null,['class'=>'form-control select2']) }}
-                                    <br>
-                                    <br>
-                                    <ul class="list-group product-list-group" style="height: 600px; overflow-y: scroll">
-                                        @foreach($products as $product)
-                                            <li class="list-group-item">
-                                                <div class="row">
-                                                    <div class="col-md-4 item-image">
-                                                        <img class="image img-fluid" src="https://dummyimage.com/600x400/000/fff" alt="">
-                                                    </div>
+                                <div class="col-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Order Detail
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-light table-bordered  order-table table-order-detail" >
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Qty</th>
+                                                    <th>product price</th>
+                                                    <th>selling price</th>
+                                                    <th>Total Selling Price</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                    <div class="col-md-8 item-data" >
+                                                @foreach($order->orderDetails  as $productDetail)
 
-                                                        Name : {{ $product->name }} <br>
-                                                        Code : {{ $product->code }} <br>
-                                                        Regular Price: {{ $product->regular_price }} <br>
-                                                        Offer Price: {{ $product->offer_price}} <br>
+                                                    @include('partials.dashboard.order.product_detail',[
+                                                            'sl'=>$loop->iteration,
+                                                            'id'=>$productDetail->product->id,
+                                                            'name'=>$productDetail->product->name,
+                                                            'code'=>$productDetail->product->code,
+                                                            'regularPrice'=>$productDetail->product->regular_price,
+                                                            'offerPrice'=>$productDetail->product->offer_price,
+                                                            ])
 
-                                                        <button type="button" name="button" class="btn btn-success btn-sm btn-add" title="Add To Order"
-                                                                data-id = "{{ $product->id }}"
-                                                                data-name = "{{ $product->name }}"
-                                                                data-code = "{{ $product->code }}"
-                                                                data-image = "{{ 'https://dummyimage.com/600x400/000/fff' }}"
-                                                                data-regular_price = "{{ $product->regular_price }}"
-                                                                data-offer_price = "{{ $product->offer_price }}"
-                                                        > <i class="fa fa-plus"></i> Add</button>
+                                                @endforeach
 
-                                                    </div>
+                                                </tbody>
 
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
+                                            </table>
+
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div class="col-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Order Summary
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group focused">
+                                                {{ Form::textGroup('total_offer_price','0.00','Total Offer Price',['class'=>'form-control net_total_offer_price','readonly'],'','col-md-12') }}
+                                            </div>
+                                            <div class="form-group focused">
+                                                {{ Form::textGroup('total_selling_price','0.00','Total Selling Price',['class'=>'form-control net_total_selling_price','readonly'],'','col-md-12') }}
+
+                                            </div>
+                                            <div class="form-group focused">
+                                                {{ Form::textGroup('total_profit','0.00','Total Profit',['class'=>'form-control net_total_profit','readonly'],'','col-md-12') }}
+                                            </div>
+                                            <div class="form-group focused">
+                                                @php
+                                                    $options = [
+                                                        ''=>'Select Area',
+                                                        '50'=>'In Dhaka',
+                                                        '100'=>'Near Dhaka',
+                                                        '150'=>'Out Of Dhaka',
+                                                        '0'=>'No Delivery Charge',
+                                                    ];
+                                                @endphp
+                                                {{ Form::selectGroup('delivery_in',$options,[],'Delivery',['class'=>'form-control delivery_in'],'','col-md-12') }}
+                                            </div>
+
+                                            <table class="table table-light table-summery">
+                                                <tr>
+                                                    <th>Delivery Charge:</th>
+                                                    <td>
+                                                        <input type="text" class="form-control" readonly="" id="delivery_charge" name="delivery_charge">TK
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Total:</th>
+                                                    <td><input type="text" class="form-control" readonly="" id="final_total" name="final_total">TK</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+
+                                                        {{ Form::submit('Next Step',['class'=>'btn btn-info btn-next-back']) }}
+
+                                                    </td>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
 
-                        <div class="col-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    Order Detail
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-light table-bordered  order-table table-order-detail" >
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Qty</th>
-                                            <th>product price</th>
-                                            <th>selling price</th>
-                                            <th>Total Selling Price</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                        <div class="second-step" style="display: block; width: 100%;">
 
-                                        <tr>
-                                            <td colspan="7" class="text-center text-danger">
-                                                No product added !
-                                            </td>
-                                        </tr>
-
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-header">
-                                    Order Summary
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group focused">
-                                        {{ Form::textGroup('total_offer_price','0.00','Total Offer Price',['class'=>'form-control net_total_offer_price','readonly'],'','col-md-12') }}
+                            <div class="col-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Order Shipping Address
                                     </div>
-                                    <div class="form-group focused">
-                                        {{ Form::textGroup('total_selling_price','0.00','Total Selling Price',['class'=>'form-control net_total_selling_price','readonly'],'','col-md-12') }}
+                                    <div class="card-body">
+
+                                            {{ Form::textGroup('name',null,'Name',['class'=>'form-control shipping-name',],'','col-md-12') }}
+
+                                            {{ Form::textareaGroup('address',null,'Address',['class'=>'form-control shipping-address','placeholder'=>'Address'],'','col-md-12') }}
+
+                                            {{ Form::textareaGroup('optional_address',null,'Optional Address',['class'=>'form-control shipping-optional_address','placeholder'=>'Optional Address'],'','col-md-12') }}
+
+                                            {{ Form::textGroup('mobile_number',null,'Mobile Number',['class'=>'form-control shipping-mobile_number','placeholder'=>'010xxxxxxxx'],'','col-md-12') }}
+
+                                            {{ Form::submit('Back',['class'=>'btn btn-info btn-next-back']) }}
+                                            {{ Form::submit('Place Order',['class'=>'btn btn-success']) }}
 
                                     </div>
-                                    <div class="form-group focused">
-                                        {{ Form::textGroup('total_profit','0.00','Total Profit',['class'=>'form-control net_total_profit','readonly'],'','col-md-12') }}
-                                    </div>
-                                    <div class="form-group focused">
-                                        @php
-                                            $options = [
-                                                ''=>'Select Area',
-                                                '50'=>'In Dhaka',
-                                                '100'=>'Near Dhaka',
-                                                '150'=>'Out Of Dhaka',
-                                                '0'=>'No Delivery Charge',
-                                            ];
-                                        @endphp
-                                        {{ Form::selectGroup('delivery_in',$options,[],'Delivery',['class'=>'form-control delivery_in'],'','col-md-12') }}
-                                    </div>
-
-                                    <table class="table table-light table-summery">
-                                        <tr>
-                                            <th>Delivery Charge:</th>
-                                            <td>
-                                                <input type="text" class="form-control" readonly="" id="delivery_charge" name="delivery_charge">TK
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Total:</th>
-                                            <td><input type="text" class="form-control" readonly="" id="final_total" name="final_total">TK</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <button type="button" class="btn btn-warning">Next</button>
-                                            </td>
-                                    </table>
-
                                 </div>
+
                             </div>
 
                         </div>
+
                     </div>
 
                 </div>
@@ -166,6 +209,14 @@
 
     <script>
         $(document).ready(function() {
+
+
+            $('body').on('click','.btn-next-back',function (){
+                $('.first-step').toggle()
+                $('.second-step').toggle()
+            })
+
+
 
             $('.select2').on('select2:select', function (e) {
                 var id = e.params.data.id;
@@ -389,7 +440,9 @@
 
             }
 
-            let noRowHtmlVar = $('body').find('.table-order-detail tbody').html();
+            let noRowHtmlVar = '<td colspan="7" class="text-center text-danger">\
+                                No product added !\
+                                </td>';
 
 
             function noRowHtml(){
@@ -416,7 +469,7 @@
             width: 200px;
             float: right;
         }
-        .table-summery input{
+        .table-summery input[type=text]{
             width: 80px;
             float: left;
             margin-right: 10px;
