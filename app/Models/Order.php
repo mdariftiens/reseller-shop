@@ -15,7 +15,8 @@ class Order extends Model
         'updated_by_usr_id'
     ];
 
-    public function orderDetail(){
+    public function orderDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(OrderDetail::class);
     }
 
