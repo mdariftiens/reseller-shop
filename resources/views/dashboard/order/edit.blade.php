@@ -264,8 +264,8 @@
 
                         toastr.success( response.data.message)
                         setTimeout(function (){
-                            window.location.href = "{{ route('order.index') }}";
-                        },2000)
+                            window.location.href = response.data.url;
+                        },1000)
                     })
                     .catch(function (error) {
                         // handle error

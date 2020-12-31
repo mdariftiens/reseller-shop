@@ -201,10 +201,10 @@ class OrderController extends Controller
                 'profit' => $profit,
             ]);
 
-            $offerPriceTotal += $originalPrice;
-            $sellingPriceTotal += $sellingPrice;
+            $offerPriceTotal += $originalPrice * $qty;
+            $sellingPriceTotal += $sellingPrice * $qty;
             $profitTotal += $profit;
-            $noOfProduct+=1;
+            $noOfProduct  += $qty ;
 
         }
 
