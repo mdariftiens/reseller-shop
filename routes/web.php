@@ -30,6 +30,9 @@ Route::prefix('backend')->group(function(){
     Route::resource('collection', App\Http\Controllers\Backend\CollectionController::class);
     Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
     Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
+
     Route::resource('order', App\Http\Controllers\Backend\OrderController::class);
+    Route::post('order/note/{order}', [App\Http\Controllers\Backend\OrderController::class,'storeNote'])->name('order.note');
+    Route::put('order/change-status/{order}', [App\Http\Controllers\Backend\OrderController::class,'changeStatus'])->name('order.changeStatus');
 
 });
