@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="first-step" style="display: none; width: 100%;">
+                        <div class="first-step" style="display: block; width: 100%;">
                             <div class="row">
                                 <div class="col-3">
                                     <div class="card">
@@ -90,8 +90,9 @@
                                                             'id'=>$productDetail->product->id,
                                                             'name'=>$productDetail->product->name,
                                                             'code'=>$productDetail->product->code,
-                                                            'regularPrice'=>$productDetail->product->regular_price,
-                                                            'offerPrice'=>$productDetail->product->offer_price,
+                                                            'regularPrice'=>$productDetail->product->offer_price,
+                                                            'offerPrice'=>$productDetail->selling_price,
+                                                            'qty' => $productDetail->quantity
                                                             ])
 
                                                 @endforeach
@@ -111,14 +112,15 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group focused">
-                                                {{ Form::textGroup('total_offer_price','0.00','Total Offer Price',['class'=>'form-control net_total_offer_price','readonly'],'','col-md-12') }}
+
+                                                {{ Form::textGroup('total_offer_price',$order->offer_price_total,'Total Offer Price',['class'=>'form-control net_total_offer_price','readonly'],'','col-md-12') }}
                                             </div>
                                             <div class="form-group focused">
-                                                {{ Form::textGroup('total_selling_price','0.00','Total Selling Price',['class'=>'form-control net_total_selling_price','readonly'],'','col-md-12') }}
+                                                {{ Form::textGroup('total_selling_price',$order->selling_price_total,'Total Selling Price',['class'=>'form-control net_total_selling_price','readonly'],'','col-md-12') }}
 
                                             </div>
                                             <div class="form-group focused">
-                                                {{ Form::textGroup('total_profit','0.00','Total Profit',['class'=>'form-control net_total_profit','readonly'],'','col-md-12') }}
+                                                {{ Form::textGroup('total_profit', $order->profit_total,'Total Profit',['class'=>'form-control net_total_profit','readonly'],'','col-md-12') }}
                                             </div>
                                             <div class="form-group focused">
                                                 @php
@@ -130,19 +132,19 @@
                                                         '0'=>'No Delivery Charge',
                                                     ];
                                                 @endphp
-                                                {{ Form::selectGroup('delivery_in',$options,[],'Delivery',['class'=>'form-control delivery_in'],'','col-md-12') }}
+                                                {{ Form::selectGroup('delivery_in',$options,$order->delivery_charge,'Delivery',['class'=>'form-control delivery_in'],'','col-md-12') }}
                                             </div>
 
                                             <table class="table table-light table-summery">
                                                 <tr>
                                                     <th>Delivery Charge:</th>
                                                     <td>
-                                                        <input type="text" class="form-control" readonly="" id="delivery_charge" name="delivery_charge">TK
+                                                        <input type="text" class="form-control" readonly="" id="delivery_charge" name="delivery_charge" value="{{$order->delivery_charge}}">TK
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total:</th>
-                                                    <td><input type="text" class="form-control" readonly="" id="final_total" name="final_total">TK</td>
+                                                    <td><input type="text" class="form-control" readonly="" id="final_total" name="final_total" value="{{ $order->selling_price_total + $order->delivery_charge }}">TK</td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -161,7 +163,7 @@
 
                         </div>
 
-                        <div class="second-step" style="display: block; width: 100%;">
+                        <div class="second-step" style="display: none; width: 100%;">
 
                             <div class="col-3">
                                 <div class="card">
@@ -170,16 +172,20 @@
                                     </div>
                                     <div class="card-body">
 
-                                            {{ Form::textGroup('name',null,'Name',['class'=>'form-control shipping-name',],'','col-md-12') }}
+                                            @php
+                                                $shipping = $order->orderShipping;
+                                            @endphp
 
-                                            {{ Form::textareaGroup('address',null,'Address',['class'=>'form-control shipping-address','placeholder'=>'Address'],'','col-md-12') }}
+                                            {{ Form::textGroup('name',$shipping->name,'Name',['class'=>'form-control shipping-name',],'','col-md-12') }}
 
-                                            {{ Form::textareaGroup('optional_address',null,'Optional Address',['class'=>'form-control shipping-optional_address','placeholder'=>'Optional Address'],'','col-md-12') }}
+                                            {{ Form::textareaGroup('address',$shipping->address,'Address',['class'=>'form-control shipping-address','placeholder'=>'Address'],'','col-md-12') }}
 
-                                            {{ Form::textGroup('mobile_number',null,'Mobile Number',['class'=>'form-control shipping-mobile_number','placeholder'=>'010xxxxxxxx'],'','col-md-12') }}
+                                            {{ Form::textareaGroup('optional_address',$shipping->optional_address,'Optional Address',['class'=>'form-control shipping-optional_address','placeholder'=>'Optional Address'],'','col-md-12') }}
+
+                                            {{ Form::textGroup('mobile_number',$shipping->mobile_number,'Mobile Number',['class'=>'form-control shipping-mobile_number','placeholder'=>'010xxxxxxxx'],'','col-md-12') }}
 
                                             {{ Form::submit('Back',['class'=>'btn btn-info btn-next-back']) }}
-                                            {{ Form::submit('Place Order',['class'=>'btn btn-success']) }}
+                                            {{ Form::submit('Place Order',['class'=>'btn btn-success btn-submit']) }}
 
                                     </div>
                                 </div>
@@ -208,12 +214,75 @@
     @include('partials.dashboard.js.toastr')
 
     <script>
+
         $(document).ready(function() {
 
+            let $body = $('body');
 
-            $('body').on('click','.btn-next-back',function (){
+            // after loading data only for editing order.
+            calculate();
+
+            $body.on('click','.btn-next-back',function (){
+                console.log($body.find('.sl').length, "$body.on('click','.btn-next-back',function (){")
+                if( $body.find('.sl').length == 0){
+                    toastr.error("Must have one product in product list");
+                    return;
+                }
                 $('.first-step').toggle()
                 $('.second-step').toggle()
+            })
+
+
+            $body.on('click','.btn-submit',function (){
+
+                let f = {};
+                f.name = $('#name').val()
+                f.address = $('#address').val()
+                f.optional_address = $('#optional_address').val()
+                f.mobile_number = $('#mobile_number').val()
+                f.delivery_charge = $('#delivery_charge').val()
+
+                f.product_id = [];
+                $body.find('.id').each(function (i,e) {
+                    f.product_id.push( e.value);
+                })
+
+                f.qty = [];
+                $body.find('.qty').each(function (i,e) {
+                    f.qty.push( e.value);
+                })
+
+                f.selling_price = [];
+                $body.find('.selling_price').each(function (i,e) {
+                    f.selling_price.push( e.value);
+                })
+
+                axios.put('{{ route('order.update',$order->id) }}', f)
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+                        toastr.success( response.data.message)
+                    })
+                    .catch(function (error) {
+                        // handle error
+
+                        if( error.response.status === 422){
+
+                            let errorMessage = '';
+
+                            let i = 1;
+                            $.each(error.response.data.errors, function(index, value){
+                                errorMessage += i++ + '. ' + value[0] + "<br>";
+                            });
+
+                            toastr.error(errorMessage)
+
+                        }
+
+                    })
+                    .then(function () {
+                        // always executed
+                    });
             })
 
 
@@ -274,7 +343,7 @@
 
             });
 
-            $('body').on('click','.btn-add',function (e) {
+            $body.on('click','.btn-add',function (e) {
                 let id = $(this).data('id');
                 let name = $(this).data('name');
                 let code = $(this).data('code');
@@ -285,25 +354,25 @@
 
                 let isAdded = false;
 
-                $('body').find('.id').each(function (i,e) {
+                $body.find('.id').each(function (i,e) {
                    if( $(e).val() == id)
                    {
                        isAdded = true;
                        toastr.error("Product already added!")
-                       return;
                    }
                 });
+
                 if ( isAdded ){
                     return;
                 }
 
-                let isRealRow = $('body').find('.table-order-detail tbody tr').first().find('td').length > 1;
+                let isRealRow = $body.find('.table-order-detail tbody tr').first().find('td').length > 1;
 
                 if ( ! isRealRow){
-                    $('body').find('.table-order-detail tbody').html('');
+                    $body.find('.table-order-detail tbody').html('');
                 }
 
-                $('body').find('.table-order-detail tbody').append(rowHtmlTemplate(id, name, code, regular_price, offer_price));
+                $body.find('.table-order-detail tbody').append(rowHtmlTemplate(id, name, code, regular_price, offer_price));
 
                 generateSl();
                 calculate()
@@ -368,11 +437,11 @@
 
             }
 
-            $('body').on("keyup",'.qty, .selling_price', function (e) {
+            $body.on("keyup",'.qty, .selling_price', function (e) {
                 calculate();
             })
 
-            $('body').on('click','.delete-product', function (e) {
+            $body.on('click','.delete-product', function (e) {
                 if( $('body').find('.sl').length > 1){
                     $(this).parents('tr').remove()
                     generateSl();
@@ -430,17 +499,18 @@
 
             function generateSl(){
 
-                if( $('body').find('.sl').length == 0){
-                    $('body').find('.table-order-detail tbody').html(noRowHtml());
+                if( $body.find('.sl').length == 0){
+                    $body.find('.table-order-detail tbody').html(noRowHtml());
                 }else{
-                    $('body').find('.sl').each(function (index,el) {
+                    $body.find('.sl').each(function (index,el) {
                         $(el).text(index+1) ;
                     })
                 }
 
             }
 
-            let noRowHtmlVar = '<td colspan="7" class="text-center text-danger">\
+            let noRowHtmlVar;
+            noRowHtmlVar = '<td class="text-center text-danger" colspan="7">\
                                 No product added !\
                                 </td>';
 
@@ -449,7 +519,7 @@
                 return noRowHtmlVar;
             }
 
-            $('body').on('change','.delivery_in',function (el) {
+            $body.on('change','.delivery_in',function (el) {
                 calculate()
             })
         });

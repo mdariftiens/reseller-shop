@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->float('offer_price_total')->default(0);
             $table->float('selling_price_total')->default(0);
             $table->float('profit_total')->default(0);
+            $table->float('delivery_charge')->default(0);
             $table->unsignedInteger('no_of_product')->default(0);
 
             $table->timestamps();

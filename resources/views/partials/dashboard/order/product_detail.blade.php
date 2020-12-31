@@ -11,12 +11,12 @@
     </td>
     <td>
         <div class="form-group">
-            <input type="text" class="form-control qty" name="qty[]" value="1">
+            <input type="text" class="form-control qty" name="qty[]" value="{{ $qty }}">
         </div>
     </td>
     <td>
         <div class="form-group focused">
-            <input type="text" class="form-control offer_price" readonly="" name="offer_price[]" value="{{$offerPrice}}">
+            <input type="text" class="form-control offer_price" readonly="" name="offer_price[]" value="{{$regularPrice}}">
         </div>
     </td>
     <td>
@@ -28,7 +28,7 @@
         <div class="form-group focused">
             <input type="text" class="form-control total_selling_price" readonly="" name="total_selling_price[]" value="{{ $offerPrice }}">
             <input type="text" class="form-control total_offer_price" readonly="" name="total_selling_price[]" value="{{ $offerPrice }}">
-            <input type="text" class="form-control total_profit" readonly="" name="total_selling_price[]" value="{{ $regularPrice - $offerPrice }} }">
+            <input type="text" class="form-control total_profit" readonly="" name="total_selling_price[]" value="{{ $regularPrice - $offerPrice }}">
         </div>
     </td>
     <td>
