@@ -261,7 +261,11 @@
                     .then(function (response) {
                         // handle success
                         console.log(response);
+
                         toastr.success( response.data.message)
+                        setTimeout(function (){
+                            window.location.href = "{{ route('order.index') }}";
+                        },2000)
                     })
                     .catch(function (error) {
                         // handle error

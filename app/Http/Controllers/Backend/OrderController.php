@@ -25,7 +25,7 @@ class OrderController extends Controller
      */
     public function index(): View
     {
-        $list = Order::with('orderDetail','notes','orderShipping','deliveryMan','createdBy')->collect();
+        $list = Order::with('orderDetails','notes','orderShipping','deliveryMan','createdBy')->collect();
 
         return view('dashboard.order.index', compact('list'));
     }
@@ -38,11 +38,11 @@ class OrderController extends Controller
     public function create()
     {
 
-        $categories = Cat::orderBy('name')->get()->pluck("name",'id')->toArray();
+        $products = Product::enabled()->get();
 
-        $collections = Collection::enabled()->get()->pluck("name","id")->toArray();
+        $categories = Cat::getEnabledItemForDropdown();
 
-        return view("dashboard.product.create", compact('collections','categories'));
+        return view("dashboard.order.create", compact('categories', 'products'));
     }
 
     /**
@@ -77,7 +77,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with('orderDetail','notes','orderShipping','deliveryMan','createdBy', 'orderDetail.product')
+        $order = Order::with('orderDetails','notes','orderShipping','deliveryMan','createdBy', 'orderDetails.product')
             ->where('id', $id)
             ->first();
 
