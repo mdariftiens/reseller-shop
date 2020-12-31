@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Abstracts\Http\Controller;
-use App\Http\Requests\ProductRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Cat;
-use App\Models\Collection;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderShipping;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -51,10 +48,10 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param UpdateOrderRequest $request
+     * @param OrderRequest $request
      * @return JsonResponse
      */
-    public function store(UpdateOrderRequest $request): JsonResponse
+    public function store(OrderRequest $request): JsonResponse
     {
 
 
@@ -156,11 +153,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateOrderRequest $request
+     * @param OrderRequest $request
      * @param $id
      * @return JsonResponse
      */
-    public function update(UpdateOrderRequest $request,$id)
+    public function update(OrderRequest $request, $id)
     {
         $order = Order::with('notes','orderShipping','deliveryMan','createdBy', 'orderDetails.product')
             ->where('id', $id)
@@ -230,11 +227,11 @@ class OrderController extends Controller
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(Order $order): RedirectResponse
     {
 
-        $product->delete();
+        $order->delete();
 
-        return redirect()->route('product.index');
+        return redirect()->route('order.index');
     }
 }
