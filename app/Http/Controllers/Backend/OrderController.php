@@ -9,10 +9,13 @@ use App\Models\Cat;
 use App\Models\Collection;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\OrderShipping;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -48,25 +51,70 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ProductRequest $request
-     * @return Response
+     * @param UpdateOrderRequest $request
+     * @return JsonResponse
      */
-    public function store(ProductRequest $request): Response
+    public function store(UpdateOrderRequest $request): JsonResponse
     {
 
-        $product = Product::create( [
-            'name'=> $request->name,
-            'description'=> $request->description,
-            'enabled' => $request->enabled,
-            'collection_id' => $request->collection,
-            'regular_price' => $request->regular_price,
-            'offer_price' => $request->offer_price,
-            'delivery_within_days' => $request->delivery_within_days,
-        ] );
 
-        $product->categories()->sync(request('category',null));
+        $order = Order::create([
+            'status' => 'ORDER_STATUS_NOT_ACCEPTED',
+        ]);
 
-        return redirect()->route('product.index');
+        OrderShipping::create([
+            'order_id'=> $order->id,
+            'name' => $request->name,
+            'address'=> $request->address,
+            'optional_address' => $request->optional_address,
+            'mobile_number' => $request->mobile_number,
+        ]);
+
+        $productIds = $request->product_id; // product_id as array
+
+        $products = Product::find($productIds);
+
+        $offerPriceTotal = 0;
+        $sellingPriceTotal = 0;
+        $profitTotal = 0;
+        $noOfProduct = 0;
+
+        foreach ( $productIds as $key => $p_id){
+
+            $qty = $request->qty[$key];
+            $sellingPrice = $request->selling_price[$key];
+            $originalPrice = $products->find($p_id)->offer_price;
+            $profit = ( $sellingPrice * $qty) - ( $originalPrice * $qty);
+
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $p_id,
+                'quantity' => $qty,
+                'original_price' => $originalPrice,
+                'selling_price' => $sellingPrice,
+                'profit' => $profit,
+            ]);
+
+            $offerPriceTotal += $originalPrice * $qty;
+            $sellingPriceTotal += $sellingPrice * $qty;
+            $profitTotal += $profit;
+            $noOfProduct  += $qty ;
+
+        }
+
+        Order::where('id', $order->id)->update([
+            'offer_price_total' => $offerPriceTotal,
+            'selling_price_total' => $sellingPriceTotal,
+            'profit_total' => $profitTotal,
+            'no_of_product' => $noOfProduct,
+            'delivery_charge' => $request->delivery_charge,
+        ]);
+
+
+        return response()->json([
+            'message'=>'Order Created',
+            'url'=> route('order.edit', $order->id),
+        ], 201);
     }
 
     /**
@@ -110,7 +158,7 @@ class OrderController extends Controller
      *
      * @param UpdateOrderRequest $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function update(UpdateOrderRequest $request,$id)
     {
@@ -168,7 +216,11 @@ class OrderController extends Controller
             'delivery_charge' => $request->delivery_charge,
         ]);
 
-        return response()->json(['message'=>'Order Updated '], 200);
+        return response()->json([
+            'message'=>'Order Updated ',
+            'url'=> route('order.index')
+        ], 200);
+
     }
 
     /**
