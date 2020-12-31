@@ -6,88 +6,147 @@
 @section('content')
     <!-- Main row -->
     <div class="row">
+
         <!-- Left col -->
         <section class="col-lg-12 connectedSortable">
 
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Order Detail</h3>
-                </div>
-                <!-- /.card-header -->
-
 
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Order Status </th>
-                            <th>Order Detail </th>
-                            <th>Shipping Address</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    {{ $order->status }}  <br>
-                                    <span><strong>Delivery Man:</strong></span> <br>
-                                    {{ $order->deliveryMan->name }} <br>
-                                    {{ $order->deliveryMan->mobile }} <br>
-                                    <span><strong>Created By:</strong></span> <br>
-                                    {{ $order->createdBy->name }} <br>
-                                    {{ $order->createdBy->mobile }} <br>
-                                    <span><strong>Order Summary:</strong></span> <br>
-                                    Original Price Total : {{ $order->original_price_total }} <br>
-                                    Selling Price Total : {{ $order->selling_price_total }} <br>
-                                    Profit Total : {{ $order->profit_total }} <br>
-                                    No Of Product : {{ $order->no_of_product }} <br>
-                                    <span><strong>created &amp; updated:</strong></span> <br>
-                                    created @ {{ $order->created_at }} <br>
-                                    @if($order->created_at != $order->updated_at )
-                                        updated @ {{ $order->updated_at }} <br>
-                                    @endif
+                    <div class="row">
+                        <div class="col-3">
 
-                                </td>
-                                <td>
+                            <h3> Order Summary</h3>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            {{ Form::selectGroup('status', config('shop.order_status'), $order->status, '', ['class'=>'form-control status'],null, 'col-lg-12') }}
+                                            {{ Form::submit('Change Status',['class'=>'btn btn-info btn-change-status']) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Delivery Man:</th>
+                                        <td>
+                                            {{ $order->deliveryMan->name }} <br>
+                                            {{ $order->deliveryMan->mobile }} <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Created By:</th>
+                                        <td>
+                                            {{ $order->createdBy->name }} <br>
+                                            {{ $order->createdBy->mobile }}
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <th colspan="2">Order Summary</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        Original Price Total : {{ $order->offer_price_total }} TK <br>
+                                        Selling Price Total : {{ $order->selling_price_total }} TK <br>
+                                        Profit Total : {{ $order->profit_total }} TK <br>
+                                        No Of Product : {{ $order->no_of_product }} TK <br>
+                                        Delivery Charge : {{ $order->delivery_charge }} TK <br>
+                                        <span><strong>created &amp; updated:</strong></span> <br>
+                                        created @ {{ $order->created_at }} <br>
+                                        @if($order->created_at != $order->updated_at )
+                                            updated @ {{ $order->updated_at }} <br>
+                                        @endif
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                                    <h3> Products</h3>
                                     <table class="table table-bordered">
+                                        <thead>
                                         <tr>
-                                            <td> ID </td>
+                                            <td> # </td>
                                             <td> Name </td>
                                             <td> Qty </td>
-                                            <td> Org.Price </td>
-                                            <td> Selling.Price </td>
+                                            <td> Offer Price </td>
                                             <td> Selling.Price </td>
                                         </tr>
-                                    @foreach($order->orderDetail as $product)
-                                        <tr>
-                                            <td> {{ $product->product->id }} </td>
-                                            <td> {{ $product->product->name }} </td>
-                                            <td> {{ $product->quantity }} </td>
-                                            <td> {{ $product->original_price }} </td>
-                                            <td> {{ $product->selling_price }} </td>
-                                            <td> {{ $product->profit }} </td>
-                                        </tr>
-                                    @endforeach
-                                    </table>
-                                </td>
-                                <td>
-                                    {{ $order->orderShipping->name }} <br>
-                                    {{ $order->orderShipping->address }} <br>
-                                    {{ $order->orderShipping->optional_address }} <br>
-                                    {{ $order->orderShipping->mobile_number }} <br>
-                                </td>
+                                        </thead>
 
-                                <td>
-                                    {{ Form::open(['url'=> route('order.destroy',$order->id), 'style' => 'display: initial','method'=>'POST']) }}
-                                    @method('DELETE')
-                                    {!! csrf_field() !!}
-                                    <button type="submit" class="btn btn-danger"/> <i class="fa fa-trash"></i></button>
-                                    {{ Form::close() }}
-                                    <a  class="btn btn-warning" href="{{ route('order.edit',[$order->id]) }}"><i class="fa fa-edit"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <tbody>
+
+                                        @foreach($order->orderDetails  as $productDetail)
+
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $productDetail->product->name }} - {{$productDetail->product->code}}</td>
+                                                <td>{{  $productDetail->quantity }}</td>
+                                                <td>{{  $productDetail->product->offer_price }}</td>
+                                                <td>{{  $productDetail->selling_price }}</td>
+                                            </tr>
+
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="4"> Selling Price Total  </td> <td> {{ $order->selling_price_total }} TK </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"> Delivery Charge  </td> <td> {{ $order->delivery_charge }} TK  </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"> Net Amount  </td> <td> {{ $order->selling_price_total + $order->delivery_charge }} TK </td>
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                        <tr> <td>
+                                                <strong>Shipping Address</strong><br>
+                                                {{ $order->orderShipping->name }} <br>
+                                                {{ $order->orderShipping->address }} <br>
+                                                {{ $order->orderShipping->optional_address }} <br>
+                                                {{ $order->orderShipping->mobile_number }} <br>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>
+                                                <a  class="btn btn-warning" href="{{ route('order.edit',[$order->id]) }}"><i class="fa fa-edit"></i> Edit</a>
+                                                {{ Form::open(['url'=> route('order.destroy',$order->id), 'style' => 'display: initial','method'=>'POST']) }}
+                                                @method('DELETE')
+                                                {!! csrf_field() !!}
+                                                <button type="submit" class="btn btn-danger"/>Delete</button>
+                                                {{ Form::close() }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                        </div>
+                        <div class="col-3">
+                            <h3> Notes</h3>
+
+                            <ul class="list-group note-group" >
+                                @forelse($order->notes as $note)
+                                    <li class="list-group-item ">
+                                        <div class="text-gray">{{ $note->note }}</div> <br>- <span class="text-sm text-blue">{{ $note->created_at->diffForHumans() }}</span>
+                                    </li>
+
+                                @empty
+                                    <span class="text-center text-danger"> No Notes! </span>
+                                @endforelse
+                            </ul>
+                            <br>
+
+
+                                {{ Form::textareaGroup("note",null,"Note:",['class'=>'form-control'],null,'col-md-12') }}
+                                {{ Form::submit('Save Note',['class'=>'btn btn-info btn-note']) }}
+
+
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -101,4 +160,70 @@
 
 @push('footer_end_script')
     @include('partials.dashboard.js.tooltip')
+    @include('partials.dashboard.js.axios')
+    @include('partials.dashboard.js.toastr')
+
+    <script>
+
+        $(document).ready(function() {
+
+            let $body = $('body');
+
+            $body.on('click','.btn-note',function (){
+
+                let f = {};
+                f.note = $('#note').val()
+
+                axios.post('{{ route('order.note',$order->id) }}', f)
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+
+                        $('.note-group').append(`<li class="list-group-item ">
+                            <div class="text-gray">${f.note }</div> <br>- <span class="text-sm text-blue">Now</span>
+                        </li>`)
+                        toastr.success( response.data.message)
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        let errorMessage = '';
+                        toastr.error(errorMessage)
+
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            })
+
+            $body.on('click','.btn-change-status',function (){
+
+                let f = {};
+                f.status = $('.status').val()
+
+                axios.put('{{ route('order.changeStatus',$order->id) }}', f)
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+
+                        toastr.success( response.data.message)
+                    })
+                    .catch(function (error) {
+
+                        let errorMessage = '';
+                        toastr.error(errorMessage)
+
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            })
+
+        });
+
+
+    </script>
+
+
 @endpush
+
+

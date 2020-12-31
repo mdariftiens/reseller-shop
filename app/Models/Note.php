@@ -12,4 +12,11 @@ class Note extends Model
         'created_by_user_id',
         'updated_by_user_id',
     ];
+
+    public function setNoteAttribute($name)
+    {
+        $this->attributes['note'] = $name;
+        $this->attributes['created_by_user_id'] = 3;
+        $this->attributes['updated_by_user_id'] = 3;
+    }
 }

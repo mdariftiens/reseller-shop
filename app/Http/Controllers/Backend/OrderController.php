@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Abstracts\Http\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Models\Cat;
+use App\Models\Note;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderShipping;
@@ -14,6 +15,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class OrderController extends Controller
@@ -233,5 +235,39 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('order.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Request $request
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function storeNote(Request $request, Order $order)
+    {
+
+        Note::create([
+            'order_id'=> $order->id,
+            'note' => $request->note,
+        ]);
+
+        return response()->json(['message'=>'Note Saved' ]);
+    }
+
+    /**
+     * change Status the specified Order.
+     *
+     * @param Request $request
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function changeStatus(Request $request, Order $order): JsonResponse
+    {
+
+        $order->status = $request->status;
+        $order->save();
+
+        return response()->json(['message'=>'Status Changed to ' . config('shop.order_status')[$request->status]]);
     }
 }
