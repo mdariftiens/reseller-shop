@@ -61,7 +61,7 @@
                                     </td>
 
                                     <td>
-                                        {{ Form::open(['url'=> route('product.destroy',$item->id), 'style' => 'display: initial','method'=>'POST']) }}
+                                        {{ Form::open(['url'=> route('order.destroy',$item->id), 'style' => 'display: initial','method'=>'POST']) }}
                                             @method('DELETE')
                                             {!! csrf_field() !!}
                                             <button type="submit" class="btn btn-danger"/>Delete</button>
