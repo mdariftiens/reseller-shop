@@ -29,6 +29,7 @@ class CreateShopSettingsTable extends Migration
             $table->string('website_url')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign(['user_id'])
