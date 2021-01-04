@@ -35,4 +35,6 @@ Route::prefix('backend')->group(function(){
     Route::post('order/note/{order}', [App\Http\Controllers\Backend\OrderController::class,'storeNote'])->name('order.note');
     Route::put('order/change-status/{order}', [App\Http\Controllers\Backend\OrderController::class,'changeStatus'])->name('order.changeStatus');
 
+    Route::resource('shop-setting', App\Http\Controllers\Backend\ShopSettingController::class);
+
 });

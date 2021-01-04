@@ -8,4 +8,7 @@ class ShopSetting extends Model
 {
     protected $table = "shop_settings";
 
+    protected $guarded =[
+
+    ];
 }
