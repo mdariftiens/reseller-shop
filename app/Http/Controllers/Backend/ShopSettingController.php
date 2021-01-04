@@ -24,13 +24,18 @@ class ShopSettingController extends Controller
     public function store(ShopSettingRequest $request)
     {
 
-        User::find(3)->shopSetting->create( $request->validated());
+        $data = array_merge( ['user_id'=>21 ],  $request->validated()         );
+
+        ShopSetting::create( $data );
+
+        return redirect()->route('shop-setting.show', 0);
+
 
     }
 
     public function show( $id)
     {
-        $user  = User::find(3);
+        $user  = User::find(21);
 
         if ($user->has('shopSetting')){
             $shopSettings = $user->shopSetting;
@@ -43,9 +48,10 @@ class ShopSettingController extends Controller
 
     public function edit($id)
     {
-        $user  = User::find(3);
+        $user  = User::find(21);
 
-        if ($user->has('shopSetting')){
+        $user->load('shopSetting');
+        if ($user->shopSetting){
             $shopSettings = $user->shopSetting;
             return view('dashboard.shop_setting.edit',compact('shopSettings'));
         }
@@ -55,7 +61,7 @@ class ShopSettingController extends Controller
 
     public function update(ShopSettingRequest $request)
     {
-        $shopSetting = User::find(3)->shopSetting;
+        $shopSetting = User::find(21)->shopSetting;
         $shopSetting->update( $request->validated());
         return redirect()->route('shop-setting.show', $shopSetting->user_id);
     }

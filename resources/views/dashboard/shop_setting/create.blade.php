@@ -1,29 +1,46 @@
 @extends('layouts.app')
 @section('title')
-    Collections - Add New
+    Shop Setting - Create
 @endsection
+
 @section('content')
     <!-- Main row -->
     <div class="row">
+
         <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
+        <section class="col-lg-12 connectedSortable">
 
             <div class="card">
+
                 <div class="card-header">
-                    <h3 class="card-title">Add New Collection </h3>
+                    <div class="card-title">
+                        Shop Setting
+                    </div>
                 </div>
-                <!-- /.card-header -->
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+
+                            {{ Form::open(['url'=>route('shop-setting.store'), 'method'=>'POST']) }}
+
+                            {{ Form::selectGroup('payment_method',config('shop.payment_method'), null,'Payment Method',['class'=>'form-control']) }}
+                            {{ Form::textareaGroup('bank_account_holder_name',  null,'Bank Account Holder Name',['class'=>'form-control']) }}
+                            {{ Form::textGroup('back_account_name',  null,'Bank Account Name',['class'=>'form-control']) }}
+                            {{ Form::textareaGroup('bank_name_and_branch',  null,'Bank Name &amp; Branch',['class'=>'form-control']) }}
+                            {{ Form::selectGroup('business_type',config('shop.business_type'),  null,'Business Type',['class'=>'form-control']) }}
+                            {{ Form::selectGroup('experience',config('shop.experience'),  null,'Experience',['class'=>'form-control']) }}
+                            {{ Form::selectGroup('age_of_business',config('shop.age_of_business'),  null,'Age Of Business',['class'=>'form-control']) }}
+                            {{ Form::textGroup('fb_page_link',  null,'fb Page Link',['class'=>'form-control']) }}
+                            {{ Form::textGroup('bkash_mobile_number',  null,'bKash Mobile Number',['class'=>'form-control']) }}
+
+                            {{ Form::submit('Save',['class'=>'btn btn-success']) }}
+
+                            {{ Form::close() }}
 
 
-                    {{ Form::open( ['url'=>route('collection.store'),'method'=>'POST']) }}
+                        </div>
 
-                    {{ Form::textGroup('name',null,'Name',['class'=>'form-control','placeholder'=>'Enter your Name.'] ) }}
-                    {{ Form::textareaGroup('description',null ,'Description.',['required'=>'','class'=>'form-control','placeholder'=>'Description of Collection'] ) }}
-                    {{ Form::checkboxGroup('enabled','0' ,'Enabled',['required'=>'','class'=>'form-control'] ) }}
-
-                    {{ Form::submit("Save",['class'=>'btn btn-sm btn-success']) }}
-                    {{ Form::close() }}
+                    </div>
 
                 </div>
                 <!-- /.card-body -->
@@ -35,3 +52,6 @@
     </div>
     <!-- /.row (main row) -->
 @endsection
+
+
+
