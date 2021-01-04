@@ -23,6 +23,7 @@
                                         <th>Status</th>
                                         <td>
                                             {{ Form::selectGroup('status', config('shop.order_status'), $order->status, '', ['class'=>'form-control status'],null, 'col-lg-12') }}
+                                            {{ Form::hidden('hidden_status', $order->status,['class'=>'hidden_status']) }}
                                             {{ Form::submit('Change Status',['class'=>'btn btn-info btn-change-status']) }}
                                         </td>
                                     </tr>
@@ -174,6 +175,11 @@
                 let f = {};
                 f.note = $('#note').val()
 
+                if(  f.note.trim().length == 0 ){
+                    toastr.error("Note is empty!");
+                    return;
+                }
+
                 axios.post('{{ route('order.note',$order->id) }}', f)
                     .then(function (response) {
                         // handle success
@@ -197,9 +203,15 @@
 
             $body.on('click','.btn-change-status',function (){
 
+                let hidden_status  = $('.hidden_status').val();
+
                 let f = {};
                 f.status = $('.status').val()
 
+                if ( hidden_status == f.status.trim() ){
+                    toastr.error("Status Not Changed");
+                    return;
+                }
                 axios.put('{{ route('order.changeStatus',$order->id) }}', f)
                     .then(function (response) {
                         // handle success
