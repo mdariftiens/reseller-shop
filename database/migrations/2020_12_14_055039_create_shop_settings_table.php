@@ -16,6 +16,7 @@ class CreateShopSettingsTable extends Migration
         Schema::create('shop_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('shop_name');
             $table->string('payment_method');
             $table->string('bank_account_holder_name')->nullable();
             $table->string('back_account_name')->nullable();

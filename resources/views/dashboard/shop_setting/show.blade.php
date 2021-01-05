@@ -20,6 +20,9 @@
 
                             <table class="table table-light">
                                     <tr>
+                                        <th>Shop Name</th>
+                                        <td>{{ $shopSettings->shop_name }}</td>
+                                    </tr><tr>
                                         <th>Payment Method</th>
                                         <td>{{ $shopSettings->payment_method }}</td>
                                     </tr>

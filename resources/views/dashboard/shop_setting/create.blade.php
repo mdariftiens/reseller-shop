@@ -23,6 +23,7 @@
 
                             {{ Form::open(['url'=>route('shop-setting.store'), 'method'=>'POST']) }}
 
+                            {{ Form::textGroup('shop_name', null,'Shop Name',['class'=>'form-control']) }}
                             {{ Form::selectGroup('payment_method',config('shop.payment_method'), null,'Payment Method',['class'=>'form-control']) }}
                             {{ Form::textareaGroup('bank_account_holder_name',  null,'Bank Account Holder Name',['class'=>'form-control']) }}
                             {{ Form::textGroup('back_account_name',  null,'Bank Account Name',['class'=>'form-control']) }}

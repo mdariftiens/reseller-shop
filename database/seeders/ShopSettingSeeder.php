@@ -28,6 +28,7 @@ class ShopSettingSeeder extends Seeder
 
                 $shopSetting = ShopSetting::create([
                     'user_id' => $user->id,
+                    'shop_name' => $faker->name,
                     'payment_method' => $paymentMethod ,
                     'bank_account_holder_name' => $faker->name,
                     'back_account_name' => $faker->bankAccountNumber,

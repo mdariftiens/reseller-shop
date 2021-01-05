@@ -25,6 +25,7 @@
 
                                 @method('put')
 
+                                {{ Form::textGroup('shop_name', $shopSettings->shop_name,'Shop Name',['class'=>'form-control']) }}
                                 {{ Form::selectGroup('payment_method',config('shop.payment_method'), $shopSettings->payment_method,'Payment Method',['class'=>'form-control']) }}
                                 {{ Form::textareaGroup('bank_account_holder_name', $shopSettings->bank_account_holder_name,'Bank Account Holder Name',['class'=>'form-control']) }}
                                 {{ Form::textGroup('back_account_name', $shopSettings->back_account_name,'Bank Account Name',['class'=>'form-control']) }}

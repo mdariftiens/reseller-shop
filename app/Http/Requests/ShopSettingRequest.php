@@ -24,6 +24,7 @@ class ShopSettingRequest extends FormRequest
     public function rules()
     {
         return [
+            'shop_name' =>'required',
             'payment_method' => 'required|in:bKash,Bank' ,
             'bank_account_holder_name' => 'required_if:payment_method,Bank',
             'back_account_name' => 'required_if:payment_method,Bank',
