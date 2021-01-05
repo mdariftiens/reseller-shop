@@ -1,0 +1,144 @@
+/**
+ * Date : 2019-Feb-15;
+ * Developer Name : Md. Mesbaul Islam || Arif Bin A. Aziz;
+ * Theme Name: Central Dashboard;
+ * Theme URI: N/A;
+ * Author: Dhaka International University;
+ * Author URI: N/A;
+ * Version: 1.1.0
+*/
+
+body{
+    font-family: 'Roboto', sans-serif;
+	overflow: hidden;
+	font-size: 12px;
+}
+
+*,
+::after,
+::before {
+    box-sizing: border-box
+}
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+img {
+    vertical-align: middle;
+    border-style: none
+}
+
+.diu-welcome{
+	width: 100%;
+	height: 100vh;
+	display: table;
+	text-align: center;
+	padding-right: 400px;
+	background-color: rgba(0, 0, 0, 0.7);
+	background-image: url('images/180-unsplash.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.diu-welcome h1{
+	color: #fff;
+	margin: 2rem auto;
+	text-transform: uppercase;
+	font-size: 3rem;
+	font-weight: 700;
+	display: inline-block;
+	padding: 1rem;
+	position: relative;
+	background-color: #28a745;
+}
+.diu-welcome h1 span{
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	margin: -2px;
+}
+
+.diu-welcome h1 span.lt {
+    left: 0;
+    top: 0;
+    border-left: 2px solid#007bff;
+    border-top: 2px solid#007bff;
+}
+.diu-welcome h1 span.lb {
+    left: 0;
+    bottom: 0;
+    border-left: 2px solid#007bff;
+    border-bottom: 2px solid#007bff;
+}
+.diu-welcome h1 span.rt {
+    right: 0;
+    top: 0;
+    border-right: 2px solid#007bff;
+    border-top: 2px solid#007bff;
+}
+.diu-welcome h1 span.rb {
+    right: 0;
+    bottom: 0;
+    border-right: 2px solid#007bff;
+    border-bottom: 2px solid#007bff;
+}
+
+
+
+
+
+.diu-welcome .diu-welcome-captions{
+	display: table-cell;
+	vertical-align: middle;
+}
+.diu-welcome .diu-welcome-captions .blockquote{
+	padding: 0 30px;
+}
+.diu-access-panel{
+	top: 0;
+	position: absolute;
+	right: 0;
+	height: 100vh;
+	width: 400px;
+	background-color: #fff;
+	background-image: url('images/login_section.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.diu-access-panel .diu-ap-logo{
+	padding: 10px;
+	text-align: center;
+}
+.diu-access-panel .diu-ap-logo h5{
+	padding-top: 15px;
+	font-size: 18px;
+}
+.diu-access-panel .diu-ap-header{
+	padding: 5px 0;
+	text-align: left;
+}
+.diu-access-panel .diu-ap-header strong{
+	display: block;
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+
+.diu-access-panel .diu-ap-content{
+	padding: 15px 20px;
+}
+.diu-access-panel .diu-ap-footer{
+	padding: 10px;
+}
+.diu-access-panel .diu-ap-footer p{
+	font-size: 14px;
+	text-align: center;
+	line-height: 20px;
+}
+@media only screen and (max-width: 768px) {
+	.diu-welcome{
+		display: none;
+	}
+	.diu-access-panel{
+		margin: 0 auto;
+		left: 0;
+	}
+}

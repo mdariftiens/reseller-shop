@@ -1,0 +1,64 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+h5{
+	display:block;
+	text-align: center;
+}
+.header, aside.db-aside, .db-article .col-md-4{
+	display: none;
+}
+
+.col-md-8 {
+	position:relative;
+	display:table ;
+    width: 210mm;
+	height: 100%;
+	min-height: 100%;
+	max-width: 100% !important;
+    margin: 0 auto;
+    font-size: 14px;
+	overflow: visible !important;
+
+}
+
+#salaryTable > table{
+	display:block;
+	width:210mm;
+	height: 100%;
+	min-height: 100%;
+	background: rebeccapurple;
+	overflow: visible !important;
+	position: relative;
+    margin: 0 auto;
+	font-size:14px;
+
+}
+
+#salaryTable > table TR {
+display:table-row !important;
+overflow: visible !important;
+position: relative;
+}
+
+
+#salaryTable > thead > tr:nth-child(2) > th:last-child {
+    width: 7cm;
+    color: yellowgreen;
+}
+#salaryTable > thead > tr:nth-child(2) > th:first-child {
+    width: 7cm;
+    color: red;
+}
+
+
+#salaryTable > thead > tr:nth-child(2) > th:nth-child(2){
+	width: 4cm;
+    color: blue;
+}
+
+#salaryTable > thead > tr:nth-child(2) >   th:nth-child(3){
+	width: 6cm;
+    color: #656565;
+}
