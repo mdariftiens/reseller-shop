@@ -1,6 +1,9 @@
 <?php
 
 return [
+        'shop_name' =>'Shop Name',
+
+        'shop_description' =>'shop description',
 
         'order_status' => [
             'ORDER_STATUS_NOT_ACCEPTED' => 'NOT_ACCEPTED',

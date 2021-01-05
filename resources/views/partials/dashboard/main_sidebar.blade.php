@@ -153,7 +153,6 @@
                         <i class="nav-icon fas fa-database"></i>
                         <p>
                             Shop Setting
-                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -166,6 +165,15 @@
                     </ul>
                 </li>
 
+
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}" class="nav-link">
+                        <i class="nav-icon far fa-sign-out-alt"></i>
+                        <p>
+                            Logout
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-header">EXAMPLES</li>
                 <li class="nav-item">
