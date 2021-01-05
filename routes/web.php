@@ -14,18 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth', function (){
-        Route::get('/home', [App\Http\Controllers\Backend\DashboardController::class, 'index'])->name('home');
-        Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
-    });
-
 Auth::routes();
 
 
-Route::prefix('backend')->group(function(){
+Route::get('/', [App\Http\Controllers\Frontend\FrontEndController::class, 'index'])->name('home');
+Route::get('/login', [App\Http\Controllers\Frontend\LoginController::class, 'show'])->name('login');
+Route::get('/logout', [App\Http\Controllers\Frontend\LoginController::class, 'logout'])->name('logout');
+Route::post('/login-verify', [App\Http\Controllers\Frontend\LoginController::class, 'verify'])->name('login-verify');
+
+
+Route::middleware('auth')->prefix('backend')->group(function(){
+
     Route::get('/', function () {
         return view('welcome');
-    })->name('backend.home');
+    })->name('backend.home')->middleware('auth');
+
+    Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
+
 
     Route::resource('collection', App\Http\Controllers\Backend\CollectionController::class);
     Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
@@ -37,4 +42,8 @@ Route::prefix('backend')->group(function(){
 
     Route::resource('shop-setting', App\Http\Controllers\Backend\ShopSettingController::class);
 
+
 });
+
+
+
