@@ -22,12 +22,13 @@ Route::get('/login', [App\Http\Controllers\Frontend\LoginController::class, 'sho
 Route::get('/logout', [App\Http\Controllers\Frontend\LoginController::class, 'logout'])->name('logout');
 Route::post('/login-verify', [App\Http\Controllers\Frontend\LoginController::class, 'verify'])->name('login-verify');
 
+Route::get('/tracking', [App\Http\Controllers\Frontend\TrackingController::class, 'index'])->name('tracking');
+Route::get('/track', [App\Http\Controllers\Frontend\TrackingController::class, 'track'])->name('track');
+Route::get('/reseller', [App\Http\Controllers\Frontend\ResellerController::class, 'index'])->name('reseller');
 
 Route::middleware('auth')->prefix('backend')->group(function(){
 
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('backend.home')->middleware('auth');
+    Route::view('/','welcome')->name('backend.home');
 
     Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
 

@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->enum('status',['ORDER_STATUS_NOT_ACCEPTED', 'ORDER_STATUS_PENDING', 'ORDER_STATUS_ON_THE_WAY', 'ORDER_STATUS_DELIVERED', 'ORDER_STATUS_CANCEL', 'ORDER_STATUS_RETURNED'])
                 ->default('ORDER_STATUS_NOT_ACCEPTED');
+            $table->string('invoice_number')->nullable();
             $table->unsignedBigInteger('deliveryman_user_id')->nullable();
             $table->unsignedBigInteger('created_by_user_id');
             $table->unsignedBigInteger('updated_by_user_id');

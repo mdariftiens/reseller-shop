@@ -30,6 +30,7 @@ class OrderSeeder extends Seeder
 
             $order = Order::create([
                 'status' => $status,
+                'invoice_number' => $faker->unique()->postcode,
                 'deliveryman_user_id' => $deliveryMan->id,
                 'created_by_user_id' => $customer->id,
                 'updated_by_user_id' => $customer->id,
