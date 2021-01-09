@@ -15,14 +15,6 @@ class Order extends Model
         'updated_by_usr_id'
     ];
 
-    public function setStatusAttribute($name)
-    {
-        $this->attributes['status'] = $name;
-        $this->attributes['deliveryman_user_id'] = auth()->id();
-        $this->attributes['created_by_user_id'] = auth()->id();
-        $this->attributes['updated_by_user_id'] = auth()->id();
-
-    }
     public function orderDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(OrderDetail::class);

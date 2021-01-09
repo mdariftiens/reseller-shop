@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Models\Cat;
 use App\Models\Collection;
+use App\Models\Order;
 use App\Models\User;
 use App\Observers\CategoryObserver;
 use App\Observers\CollectionObserver;
+use App\Observers\OrderObserver;
 use App\Observers\UserObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -35,5 +37,6 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Cat::observe(CategoryObserver::class);
         Collection::observe( CollectionObserver::class);
+        Order::observe( OrderObserver::class);
     }
 }
