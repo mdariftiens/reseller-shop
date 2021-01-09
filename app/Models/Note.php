@@ -16,7 +16,7 @@ class Note extends Model
     public function setNoteAttribute($name)
     {
         $this->attributes['note'] = $name;
-        $this->attributes['created_by_user_id'] = 3;
-        $this->attributes['updated_by_user_id'] = 3;
+        $this->attributes['created_by_user_id'] = auth()->id();
+        $this->attributes['updated_by_user_id'] = auth()->id();
     }
 }

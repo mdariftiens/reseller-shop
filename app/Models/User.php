@@ -13,6 +13,12 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes, HasRoles;
 
+    const ADMIN = 'admin';
+    const MANAGER = 'manager';
+    const DELIVERY_MAN = 'delivery-man';
+    const CUSTOMER = 'customer';
+    const SUBSCRIBER = 'subscriber';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -102,6 +108,32 @@ class User extends Authenticatable
     {
         return $this->hasMany( Bonus::class, 'customer_user_id', 'id');
     }
+
+    public function isAdmin(): bool
+    {
+        return auth()->user()->type == self::ADMIN;
+    }
+
+    public function isManager(): bool
+    {
+        return auth()->user()->type == self::MANAGER;
+    }
+
+    public function isDeliveryMan(): bool
+    {
+        return auth()->user()->type == self::DELIVERY_MAN;
+    }
+
+    public function isCustomer(): bool
+    {
+        return auth()->user()->type == self::CUSTOMER;
+    }
+
+    public function isSubscriber(): bool
+    {
+        return auth()->user()->type == self::SUBSCRIBER;
+    }
+
 
 
 

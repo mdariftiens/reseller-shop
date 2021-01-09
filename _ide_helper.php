@@ -2,8 +2,27 @@
 
 namespace {
 
+
     use phpDocumentor\Reflection\Types\Boolean;
 
+    class Observer{
+
+        public function creating($obj){}
+
+        public function created( $obj ){}
+
+        public function editing( $obj ){}
+
+        public function edited( $obj ){}
+
+        public function updating( $obj ){}
+
+        public function updated( $obj ){}
+
+        public function deleting( $obj ){}
+
+        public function deleted( $obj ){}
+    }
     class Form {
 
 
