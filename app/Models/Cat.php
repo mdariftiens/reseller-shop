@@ -17,14 +17,6 @@ class Cat extends Model
         'updated_by_user_id'
     ];
 
-    public function setNameAttribute($name)
-    {
-        $this->attributes['name'] = $name;
-        $this->attributes['created_by_user_id'] = 3;
-        $this->attributes['updated_by_user_id'] = 3;
-
-    }
-
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class );
