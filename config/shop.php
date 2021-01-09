@@ -1,9 +1,18 @@
 <?php
 
 return [
-        'shop_name' =>'Shop Name',
+        'shop_name' =>'Shop Name :)',
+        'shop_logo_url' =>'/frontend/images/logo.png',
 
         'shop_description' =>'shop description',
+
+        'user_type' =>[
+            'admin' => 'Admin',
+            'manager'=>'Manager',
+            'delivery-man'=>'Delivery Man',
+            'customer'=>'Customer',
+            'subscriber'=>'Subscriber'
+        ],
 
         'order_status' => [
             'ORDER_STATUS_NOT_ACCEPTED' => 'NOT_ACCEPTED',
@@ -12,6 +21,15 @@ return [
             'ORDER_STATUS_DELIVERED' => 'DELIVERED',
             'ORDER_STATUS_CANCEL' => 'CANCEL',
             'ORDER_STATUS_RETURNED' => 'RETURNED'
+        ],
+
+        'order_status_as_number' => [
+            'ORDER_STATUS_NOT_ACCEPTED',
+            'ORDER_STATUS_PENDING',
+            'ORDER_STATUS_ON_THE_WAY',
+            'ORDER_STATUS_DELIVERED',
+            'ORDER_STATUS_CANCEL',
+            'ORDER_STATUS_RETURNED',
         ],
 
         'payment_method'=>[

@@ -1,10 +1,12 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="Shop Logo"
-             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Shop Name</span>
+    <a href="{{ route('backend.home') }}" class="brand-link">
+        <img src="{{ config('shop.shop_logo_url') }}" alt="Shop Logo"
+             class="img-fluid"><br>
+        <div class="text-center">
+            <span class="brand-text font-weight-light text-center">{{ config('shop.shop_name') }}</span>
+        </div>
     </a>
 
     <!-- Sidebar -->
@@ -16,7 +18,7 @@
                      alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">User Name</a>
+                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
             </div>
         </div>
 
@@ -51,55 +53,56 @@
 
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
-                        <p>
-                            Collection
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('collection.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('collection.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add New</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if( auth()->user()->isAdmin())
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-database"></i>
+                            <p>
+                                Collection
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('collection.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('collection.create') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add New</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
-                        <p>
-                            Category
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('category.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>List</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('category.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Add New</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-database"></i>
+                            <p>
+                                Category
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('category.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('category.create') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add New</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                <li class="nav-item">
+                    <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
@@ -122,13 +125,15 @@
                         </li>
                     </ul>
                 </li>
-
+                @endif
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
                             Order
+
+                            <span class="badge badge-info right">2</span>
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
