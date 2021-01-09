@@ -250,6 +250,7 @@ namespace {
          * @param array $defaultValue
          * @param string|null $label
          * @param array|string[] $attributes
+         * @param string $icon
          * @param string $col
          * @param string|null $group_class
          */
@@ -258,6 +259,7 @@ namespace {
                                              array $defaultValue = [],
                                              string $label= null,
                                              array $attributes = [],
+                                             string $icon = '',
                                              string $col = 'col-md-6',
                                              string $group_class = null){}
 

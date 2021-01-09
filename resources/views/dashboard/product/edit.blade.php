@@ -47,5 +47,5 @@
 @endsection
 
 @push('footer_end_script')
-    @include('partials.dashboard.js.select2')
+    @include('partials.js.select2')
 @endpush

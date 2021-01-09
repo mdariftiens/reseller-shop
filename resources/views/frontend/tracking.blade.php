@@ -1,12 +1,13 @@
+@extends('layouts.frontend')
+
+
+@section('title')
+    Tracking Order
+@endsection
+
+@section('content')
 <section>
     <div class="white-container">
-        <div class="main-container">
-            <div >
-                <div class="basic-shopup-header">
-                    <div class="logo"></div>
-                </div>
-            </div>
-        </div>
 
         <div class="main-container">
             <h4 class="text-center" style="padding: 50px;background:rgb(249, 249, 249) none repeat scroll 0% 0%; margin-top: 27px;">
@@ -15,61 +16,34 @@
         </div>
         <div class="text-center clearfix">
 
-            <div class="col-md-4" style="margin: 30px auto;">
-                <form id="trackingForm" @submit.prevent="">
+            <div class="col-md-3" style="margin: 30px auto;">
+                <form id="trackingForm" onsubmit="javascript:return false">
 
-                    <div class="form-group focused">
-                        <select id="type" name="type"  class="form-control" v-model='type'>
-                            <option value="parcel">Parcel Delivery</option>
-                            <option value="order">Order Product</option>
-                        </select>
-                        <label for="type">Select Type *</small></label>
-                        <small id="type_help" class="form-text text-danger">&nbsp;</small>
-                    </div>
+                    {{ Form::textGroup('invoice-number',null,'Invoice Number',['class'=>'form-control ','placeholder'=>'Invoice Number...'],null,'col-md-12') }}
+                    <span id="invoice_number_error" class="text-danger"></span><br>
+                    {{ Form::submit('Search',['class'=>'btn btn-info btn-track']) }} <br><br>
 
-                    <div class="form-group focused">
-                        <input type="text" name="id" placeholder="ID"class="form-control"  v-model='id'>
-                        <label for="id">ID *</small></label>
-                        <small id="id_help" class="form-text text-danger">&nbsp;</small>
-                    </div>
-
-
-                    <button class="btn btn-info" @click="getInfo()" >Search</button>
                 </form>
             </div>
 
         </div>
 
-        <div class="" v-if='showOrder'>
+        <div>
 
-            <h3 class="text-center">Product Order Tracking || Status : {{ orderStatusToString(row.status) }} </h3> <br>
-            <div class="col-md-12" v-if="row!=null">
+            <div class="col-md-12 show-order">
+            <h3 class="text-center">Product Order Tracking || Status : <span id="status"></span> </h3> <br>
 
-                <table class="table table-default">
+                <table class="table table-default track-table">
                     <thead>
                     <tr>
-                        <th>Order By</th>
+                        <th>Order</th>
+                        <th>Order Detail</th>
                         <th>Shipping Info</th>
-                        <th>Others</th>
                     </tr>
                     </thead>
+
                     <tbody>
-                    <tr>
-                        <td>
-                            <strong>Name: </strong> {{ row.created_for.name}} <br>
-                            <strong>Mobile Number: </strong> {{ row.created_for.mobile}} <br>
-                            <strong>Address: </strong> {{ row.created_for.address}} <br>
-                        </td>
-                        <td>
-                            <strong>Name: </strong>{{ row.order_shipping.name}} <br>
-                            <strong>Mobile Number: </strong>{{ row.order_shipping.mobile_number}} <br>
-                            <strong>Address: </strong>{{ row.order_shipping.address}} <br>{{ row.order_shipping.address2}}
-                        </td>
-                        <td>
-                            <strong>Product Count: </strong>{{ row.order_details.length}} <br>
-                            <strong>Created At: </strong>{{ row.created_at}} <br>
-                        </td>
-                    </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -81,18 +55,76 @@
     </div>
 </section>
 
-<style>
+    @include('partials.js.axios')
 
-    .pair-parent{
-        display: flex;
-        flex-direction: row;
-        margin: 60px 50px;
-        background:
-            #f0f0f0;
-    }
-    .pair {
-        flex-direction: column;
-        width: 346px;
-        flex-basis: revert;
-    }
-</style>
+@endsection
+
+@push('footer_end_script')
+    <script>
+        $(document).ready(function() {
+
+            let $body = $('body');
+            let $invoice_number_error = $('#invoice_number_error');
+
+            $('.show-order').hide()
+
+            $body.on('keyup',function () {
+                $invoice_number_error.html('')
+            })
+
+            $body.on('click','.btn-track',function (){
+
+                let invoiceNumber = $('#invoice-number').val()
+
+                console.log(invoiceNumber, invoiceNumber.trim().length)
+
+                if(  invoiceNumber.trim().length == 0 ){
+                    $invoice_number_error.html("Invoice Number is empty!");
+                    return;
+                }
+
+                let url = '{{ route('track') }}?invoice_number=' + invoiceNumber;
+
+                axios.get(url)
+                    .then(function (response) {
+                        // handle success
+                        $('.show-order').show()
+                        console.log(response.data.data);
+                        let dataRow = response.data.data;
+
+                        let row = `<tr>
+                            <td>
+                                <strong>Shop Name: </strong> ${dataRow.status} <br>
+                                <strong>Invoice Number: </strong> ${dataRow.invoice_number} <br>
+                                <strong>Date: </strong> ${dataRow.created_at.split('T')[0]} <br>
+
+                            </td>
+                            <td>
+                                <strong>Delivery Charge: </strong>${dataRow.delivery_charge} <br>
+                                <strong>Number of Product: </strong>${dataRow.no_of_product} <br>
+                            </td>
+                            <td>
+                                <strong>Name: </strong> ${dataRow.order_shipping.name} <br>
+                                <strong>Address: </strong> ${dataRow.order_shipping.address} <br>
+                                <strong>Optional Address: </strong> ${dataRow.order_shipping.optional_address} <br>
+                                <strong>Mobile Number: </strong> ${dataRow.order_shipping.mobile_number} <br>
+                            </td>
+                        </tr>`;
+
+                        $('.track-table tbody').html(row)
+
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        $('.show-order').hide()
+
+                        $invoice_number_error.html( error.response.data.message);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            })
+
+        });
+    </script>
+@endpush

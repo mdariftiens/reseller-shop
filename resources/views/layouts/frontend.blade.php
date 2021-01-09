@@ -42,5 +42,7 @@
     @include('partials.frontend.footer')
 
 
+    @stack('footer_end_style')
+    @stack('footer_end_script')
 </body>
 </html>

@@ -1,8 +1,16 @@
+@extends('layouts.frontend')
+
+
+@section('title')
+    Reseller
+@endsection
+
+@section('content')
 <section>
 
     <div class="css-hbnylc">
         <section class="banner-section">
-            <div class="banner-wrapper" style="height:400px; background-image: url('https://www.jassreseller.com.bd/imgs/sent/reseller main-1-01.png');">
+            <div class="banner-wrapper" style="height:400px; background-image: url('{{ config('shop.frontend.reseller.banner.url') }}');">
                 <div class="css-1haug8j">
                     <div class="hero-text-wrapper">
                         <!-- <div class="hero-text">
@@ -28,40 +36,33 @@
         <section class="css-1jqf56i" style="background-color: #FFC929; padding-top: 35px;">
             <div class="css-1haug8j">
                 <div class="header">
-                    <p class="css-hnsmnq" style="color:#000;">Why JassReseller?</p>
-                    <p class="subtitle css-167u2d1">We know values of your Business</p>
+                    <p class="css-hnsmnq" style="color:#000;">{{ config('shop.frontend.reseller.why-tagline') }}</p>
+                    <p class="subtitle css-167u2d1">{{ config('shop.frontend.reseller.why-tagline-2') }}</p>
                     <div class="css-11rzb4j"></div>
                 </div>
                 <div class="body">
                     <div class="ant-row">
-                        <div  class="ant-col css-1ttesgs ant-col-xs-12 ant-col-sm-12 ant-col-md-8 ant-col-lg-6 ant-col-lg-offset-2 ant-col-lg-pull-1 ant-col-xl-6 ant-col-xl-offset-2 ant-col-xl-pull-1">
-                            <img src="https://www.jassreseller.com.bd/imgs/sent/reseller stock-give it first.png" class="image">
-                            <div class="info-wrapper">
-                                <div>
-                                    <p class="title css-167u2d1">Payment within next day</p>
-                                    <p class="css-57ic1j">Bank/Bkash payment day after delivery day.</p>
+                        @forelse(config('shop.frontend.reseller.cards') as $card )
+                            <div  class="ant-col css-1ttesgs ant-col-xs-12 ant-col-sm-12 ant-col-md-8 ant-col-lg-6 ant-col-lg-offset-2 ant-col-lg-pull-1 ant-col-xl-6 ant-col-xl-offset-2 ant-col-xl-pull-1">
+                                <img src="{{ $card['url'] }}" class="image">
+                                <div class="info-wrapper">
+                                    <div>
+                                        <p class="title css-167u2d1">{{ $card['title'] }}</p>
+                                        <p class="css-57ic1j">{{ $card['sub-title'] }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div  class="ant-col css-1ttesgs ant-col-xs-12 ant-col-sm-12 ant-col-md-8 ant-col-lg-6 ant-col-lg-offset-2 ant-col-lg-pull-1 ant-col-xl-6 ant-col-xl-offset-2 ant-col-xl-pull-1">
-                            <img src="https://www.jassreseller.com.bd/imgs/sent/reseller delivery-give it second.png" class="image">
-                            <div class="info-wrapper">
-                                <div>
-                                    <p class="title css-167u2d1">0% COD charge</p>
-                                    <p class="css-57ic1j">No "Cash On Delivery" within Bangladesh</p>
+                        @empty
+                            <div  class="ant-col css-1ttesgs ant-col-xs-12 ant-col-sm-12 ant-col-md-8 ant-col-lg-6 ant-col-lg-offset-2 ant-col-lg-pull-1 ant-col-xl-6 ant-col-xl-offset-2 ant-col-xl-pull-1">
+                                <img src="#" class="image">
+                                <div class="info-wrapper">
+                                    <div>
+                                        <p class="title css-167u2d1">No Cards</p>
+                                        <p class="css-57ic1j">No cards setup</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div  class="ant-col css-1ttesgs ant-col-xs-12 ant-col-sm-12 ant-col-md-8 ant-col-lg-6 ant-col-lg-offset-2 ant-col-lg-pull-1 ant-col-xl-6 ant-col-xl-offset-2 ant-col-xl-pull-1">
-                            <img src="https://www.jassreseller.com.bd/imgs/sent/reseller payment-give it third.png" class="image">
-                            <div class="info-wrapper">
-                                <div>
-                                    <p class="title css-167u2d1">Whole Bangladesh Delivery Charge</p>
-                                    <p class="css-57ic1j">All city along with Dhaka</p>
-                                </div>
-                            </div>
-                        </div>
-
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -70,8 +71,8 @@
         <section class="coverage">
             <div class="css-1haug8j">
                 <div class="header">
-                    <p class="caption css-1y8lftn">Grow up your business FAST!</p>
-                    <p class="subtitle css-57ic1j">Product &amp; Delivery support</p>
+                    <p class="caption css-1y8lftn">{{ config('shop.frontend.reseller.banner-2.tag-line') }}</p>
+                    <p class="subtitle css-57ic1j">{{ config('shop.frontend.reseller.banner-2.tag-line-2') }}</p>
                     <div class="css-11rzb4j"></div>
 
                 </div>
@@ -635,3 +636,4 @@
     }
 
 </style>
+@endsection

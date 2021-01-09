@@ -94,5 +94,5 @@
 @endsection
 
 @push('footer_end_script')
-    @include('partials.dashboard.js.tooltip')
+    @include('partials.js.tooltip')
 @endpush
