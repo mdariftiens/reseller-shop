@@ -25,13 +25,13 @@ class ShopSettingRequest extends FormRequest
     {
         return [
             'shop_name' =>'required',
-            'payment_method' => 'required|in:bKash,Bank' ,
+            'payment_method' => 'required|in:'. implode(',',config('shop.payment_method') ) ,
             'bank_account_holder_name' => 'required_if:payment_method,Bank',
             'back_account_name' => 'required_if:payment_method,Bank',
             'bank_name_and_branch' => 'required_if:payment_method,Bank',
-            'business_type' => ['required','in:Website,FB page,Shop Showroom,Nothing'],
-            'experience' => ['required', 'in:Experienced,No Experience'],
-            'age_of_business' => ['required', 'in:New,1-3 Year(s),1-5 Year(s),5+ Years'],
+            'business_type' => ['required','in:'. implode(',',config('shop.payment_method'))],
+            'experience' => ['required', 'in:'. implode(',',config('shop.payment_method'))],
+            'age_of_business' => ['required', 'in:'. implode(',',config('shop.payment_method'))],
             'fb_page_link' => 'nullable|url',
             'website_url' => 'nullable|url',
             'bkash_mobile_number' => 'required_if:payment_method,bKash',
