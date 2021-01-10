@@ -5,6 +5,7 @@
             <li class="nav-item nav-link"><a href="/">Home</a></li>
             <li class="nav-item nav-link"><a href="{{ route('reseller') }}">Reseller</a></li>
             <li class="nav-item nav-link"><a href="{{ route('tracking') }}">Tracking</a></li>
+            <li class="nav-item nav-link"><a href="{{ route('register') }}">Register</a></li>
             <li class="nav-item nav-link"><a href="{{ route('login') }}">Signin</a></li>
             <li class="nav-item nav-link"><a class="facebook-login btn btn-sm btn-primary">Continue With Facebook </a></li>
 

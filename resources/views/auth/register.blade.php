@@ -1,77 +1,53 @@
-@extends('layouts.app')
+@extends('layouts.frontend')
+@section('title')
+    {{ config('shop.shop_name') }}
+@endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="mx-6 col-md-4  " style="margin: 0 auto;">
+
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
+                <div class="card-header">
+                    <div class="card-title">Register</div>
+                </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    {{ Form::open(['url'=>route('register.store'), 'method'=>'POST']) }}
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                    @csrf
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    {{ Form::hidden('provider') }}
+                    {{ Form::hidden('provider_id') }}
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                    {{ Form::textGroup('name', null,'Name',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('mobile', null,'Mobile',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('email', null,'Email',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('shop_name', null,'Shop Name',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::selectGroup('payment_method',config('shop.payment_method'), null,'Payment Method',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('bank_account_holder_name',  null,'Bank Account Holder Name',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('back_account_name',  null,'Bank Account Name',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textareaGroup('bank_name_and_branch',  null,'Bank Name &amp; Branch',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::selectGroup('business_type',config('shop.business_type'),  null,'Business Type',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::selectGroup('experience',config('shop.experience'),  null,'Experience',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::selectGroup('age_of_business',config('shop.age_of_business'),  null,'Age Of Business',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('fb_page_link',  null,'fb Page Link',['class'=>'form-control'],null,'col-md-12') }}
+                    {{ Form::textGroup('bkash_mobile_number',  null,'bKash Mobile Number',['class'=>'form-control'],null,'col-md-12') }}
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                    {{ Form::submit('Create Account',['class'=>'btn btn-success']) }}
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    {{ Form::close() }}
                 </div>
             </div>
+
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+
         </div>
+
     </div>
-</div>
+
 @endsection

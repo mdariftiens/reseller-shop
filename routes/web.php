@@ -25,6 +25,8 @@ Route::post('/login-verify', [App\Http\Controllers\Frontend\LoginController::cla
 Route::get('/tracking', [App\Http\Controllers\Frontend\TrackingController::class, 'index'])->name('tracking');
 Route::get('/track', [App\Http\Controllers\Frontend\TrackingController::class, 'track'])->name('track');
 Route::get('/reseller', [App\Http\Controllers\Frontend\ResellerController::class, 'index'])->name('reseller');
+Route::get('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'create'])->name('register');
+Route::post('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'store'])->name('register.store');
 
 Route::middleware('auth')->prefix('backend')->group(function(){
 
