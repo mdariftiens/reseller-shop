@@ -25,9 +25,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'mobile',
-        'type',
+    ];
+
+    protected $guarded=[
+
     ];
 
     /**
@@ -48,6 +49,17 @@ class User extends Authenticatable
     protected $casts = [
 //        'email_verified_at' => 'datetime',
     ];
+
+
+    public function scopeInActive($query)
+    {
+        return $query->where('is_account_verified', 0);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_account_verified', 1);
+    }
 
     public function cats()
     {
