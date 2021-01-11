@@ -270,4 +270,11 @@ class OrderController extends Controller
 
         return response()->json(['message'=>'Status Changed to ' . config('shop.order_status')[$request->status]]);
     }
+
+    public function pdfInvoice(Order $order)
+    {
+        $order->load('orderShipping','deliveryMan','createdBy','createdBy.shopSetting', 'orderDetails.product')
+            ->first();
+        return view('dashboard.order.pdf', compact('order'));
+    }
 }

@@ -46,6 +46,7 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
 
     Route::resource('order', App\Http\Controllers\Backend\OrderController::class);
+    Route::get('order/{order}/pdf', [App\Http\Controllers\Backend\OrderController::class,'pdfInvoice'])->name('pdf-invoice');
     Route::post('order/note/{order}', [App\Http\Controllers\Backend\OrderController::class,'storeNote'])->name('order.note');
     Route::put('order/change-status/{order}', [App\Http\Controllers\Backend\OrderController::class,'changeStatus'])->name('order.changeStatus');
 
