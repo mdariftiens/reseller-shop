@@ -35,6 +35,9 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
 
 
+    Route::resource('inactive-customer', App\Http\Controllers\Backend\InactiveUserController::class);
+    Route::get('inactive-customer/{id}/unverify', [App\Http\Controllers\Backend\InactiveUserController::class,'unverify'])->name('inactive-customer.unverify');
+
     Route::get('new-customer/{id}/verify', [App\Http\Controllers\Backend\NewCustomerController::class,'verify'])->name('new-customer.verify');
     Route::resource('new-customer', App\Http\Controllers\Backend\NewCustomerController::class);
 
