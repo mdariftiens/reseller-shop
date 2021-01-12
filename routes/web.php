@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,10 @@ Route::get('/register', [App\Http\Controllers\Frontend\RegisterUserController::c
 Route::post('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'store'])->name('register.store');
 
 Route::middleware('auth')->prefix('backend')->group(function(){
+
+    Route::get('mark-all-as-read', [NotificationController::class,'markAllAsARead'])->name('notification.mark-all-as-read');
+    Route::get('mark-as-read/{notificationId}', [NotificationController::class,'markAsARead']);
+
 
     Route::view('/','welcome')->name('backend.home');
 
