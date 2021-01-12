@@ -35,7 +35,7 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::get('mark-as-read/{notificationId}', [NotificationController::class,'markAsARead']);
 
 
-    Route::view('/','welcome')->name('backend.home');
+    Route::get('/',[App\Http\Controllers\Backend\DashboardController::class, 'show'])->name('backend.home');
 
     Route::post('/home', [App\Http\Controllers\Backend\DashboardController::class, 'store'])->name('save');
 
