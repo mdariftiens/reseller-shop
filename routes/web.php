@@ -46,7 +46,10 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::get('new-customer/{id}/verify', [App\Http\Controllers\Backend\NewCustomerController::class,'verify'])->name('new-customer.verify');
     Route::resource('new-customer', App\Http\Controllers\Backend\NewCustomerController::class);
 
+    Route::get('collection/home', [App\Http\Controllers\Backend\CollectionController::class, 'home'])->name('collection.home');
+    Route::get('collection/{collection}/detail', [App\Http\Controllers\Backend\CollectionController::class, 'detail'])->name('collection.detail');
     Route::resource('collection', App\Http\Controllers\Backend\CollectionController::class);
+
     Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
     Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
 

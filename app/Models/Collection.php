@@ -14,4 +14,8 @@ class Collection extends Model
         'updated_by_user_id'
     ];
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
