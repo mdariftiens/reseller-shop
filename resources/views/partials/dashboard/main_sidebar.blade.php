@@ -209,20 +209,9 @@
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
-                        <i class="nav-icon far fa-sign-out-alt"></i>
+                        <i class="nav-icon far fa-signal"></i>
                         <p>
                             Logout
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-header">EXAMPLES</li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-calendar-alt"></i>
-                        <p>
-                            Calendar
-                            <span class="badge badge-info right">2</span>
                         </p>
                     </a>
                 </li>
