@@ -9,4 +9,7 @@
     <li class="nav-item d-none d-sm-inline-block">
         <a href="{{ route('collection.home') }}" class="nav-link">Collections</a>
     </li>
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="{{ route('product.home') }}" class="nav-link">Product</a>
+    </li>
 </ul>
