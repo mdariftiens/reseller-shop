@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\NotificationController;
+use App\Http\Controllers\Backend\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,9 @@ Route::get('/reseller', [App\Http\Controllers\Frontend\ResellerController::class
 Route::get('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'create'])->name('register');
 Route::post('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'store'])->name('register.store');
 
+Route::get('get-sub-cat-with-products/{categoryId}',[ProductController::class,'subCatNProducts'])->name('get-sub-cat-with-products');
+Route::get('get-product-detail/{productId}',[ProductController::class,'productDetail'])->name('product-detail');
+
 Route::middleware('auth')->prefix('backend')->group(function(){
 
     Route::get('mark-all-as-read', [NotificationController::class,'markAllAsARead'])->name('notification.mark-all-as-read');
@@ -51,6 +55,9 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::resource('collection', App\Http\Controllers\Backend\CollectionController::class);
 
     Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
+
+    Route::get('product/home', [App\Http\Controllers\Backend\ProductController::class, 'home'])->name('product.home');
+    Route::get('product/{product}/detail', [App\Http\Controllers\Backend\ProductController::class, 'detail'])->name('product.detail');
     Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
 
     Route::resource('order', App\Http\Controllers\Backend\OrderController::class);

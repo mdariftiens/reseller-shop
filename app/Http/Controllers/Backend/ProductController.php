@@ -11,6 +11,7 @@ use App\Models\Product;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 
@@ -144,5 +145,52 @@ class ProductController extends Controller
             else{
                 return response()->json(['message'=>'Product Not Found'], 400);
             }
+    }
+
+
+    public function home()
+    {
+        $categories = Cat::enabled()
+//            ->whereIn('parent_id',[1,2])
+            ->get();
+
+        $products = Product::enabled()->paginate(50);
+
+        return view('dashboard.product.home', compact('products','categories'));
+    }
+
+    public function detail(Product $product)
+    {
+        $product->with('categories','collection');
+
+        return view('dashboard.product.detail', compact('products'));
+    }
+
+    public function subCatNProducts($categoryId): JsonResponse
+    {
+        $subCategories = Cat::enabled()
+            ->where('parent_id', $categoryId)
+            ->get();
+
+        $catWithProducts = Cat::with('products')->where('id', $categoryId)->first();
+
+        if ( $catWithProducts->whereHas('products')){
+            $products = $catWithProducts->products;
+        }else{
+            $products = null;
+        }
+
+        return response()->json(['subCategories' => $subCategories, 'products'=>$products]);
+
+    }
+
+    public function productDetail($productId): JsonResponse
+    {
+        $product = Product::where('id', $productId)->first();
+        if ( ! $product ){
+            return response()->json(['message'=>'Product Not Found!'], 400);
+        }
+        return response()->json($product);
+
     }
 }
