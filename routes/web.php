@@ -32,6 +32,7 @@ Route::post('/register', [App\Http\Controllers\Frontend\RegisterUserController::
 
 Route::get('get-sub-cat-with-products/{categoryId}',[ProductController::class,'subCatNProducts'])->name('get-sub-cat-with-products');
 Route::get('get-product-detail/{productId}',[ProductController::class,'productDetail'])->name('product-detail');
+Route::get('image-download',[ProductController::class,'imageDownload']);
 
 Route::middleware('auth')->prefix('backend')->group(function(){
 

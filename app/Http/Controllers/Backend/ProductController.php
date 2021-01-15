@@ -186,11 +186,17 @@ class ProductController extends Controller
 
     public function productDetail($productId): JsonResponse
     {
-        $product = Product::where('id', $productId)->first();
+        $product = Product::with('categories','collection')->where('id', $productId)->first();
         if ( ! $product ){
             return response()->json(['message'=>'Product Not Found!'], 400);
         }
         return response()->json($product);
 
+    }
+
+    public function imageDownload($productId=0)
+    {
+        $filepath = public_path("/dist/img/AdminLTELogo.png");
+        return response()->download($filepath);
     }
 }

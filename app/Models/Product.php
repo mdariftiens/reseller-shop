@@ -20,13 +20,6 @@ class Product extends Model
         'delivery_within_days',
     ];
 
-    public function setNameAttribute($name)
-    {
-        $this->attributes['name'] = $name;
-        $this->attributes['created_by_user_id'] = auth()->id();
-        $this->attributes['updated_by_user_id'] = auth()->id();
-
-    }
 
     public function categories(): BelongsToMany
     {
