@@ -2,9 +2,10 @@
 
 namespace App\Observers;
 
+use App\Abstracts\Observer;
 use App\Models\Order;
 
-class OrderObserver
+class OrderObserver extends Observer
 {
 
     /**
