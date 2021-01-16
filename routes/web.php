@@ -58,7 +58,6 @@ Route::middleware('auth')->prefix('backend')->group(function(){
     Route::resource('category', App\Http\Controllers\Backend\CategoryController::class);
 
     Route::get('product/home', [App\Http\Controllers\Backend\ProductController::class, 'home'])->name('product.home');
-    Route::get('product/{product}/detail', [App\Http\Controllers\Backend\ProductController::class, 'detail'])->name('product.detail');
     Route::resource('product', App\Http\Controllers\Backend\ProductController::class);
 
     Route::resource('order', App\Http\Controllers\Backend\OrderController::class);

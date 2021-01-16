@@ -11,14 +11,20 @@ class UserRegisteredNotification extends Notification
 {
     use Queueable;
 
+    private $user;
+    private $shopSetting;
+
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param $user
+     * @param $shopSetting
      */
-    public function __construct()
+    public function __construct($user, $shopSetting)
     {
         //
+        $this->user = $user;
+        $this->shopSetting = $shopSetting;
     }
 
     /**
@@ -29,7 +35,7 @@ class UserRegisteredNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +61,7 @@ class UserRegisteredNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'message'=> 'New Customer is registered. Verify ' . $this->user->name
         ];
     }
 }
