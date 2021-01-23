@@ -91,6 +91,13 @@ class Order extends Model
             $list->where('deliveryman_user_id',  request()->deliveryMan );
         }
 
+        $searchingInInvoice = false;
+        $invoiceNumberAsIntWithoutHifen = (int) str_replace("-","",request()->key);
+        if ( request()->key != '' && strpos(request()->key,'-') > 0 && is_int($invoiceNumberAsIntWithoutHifen)){
+            $list->where('invoice_number',  request()->key );
+            $searchingInInvoice = true;
+        }
+
         $list = $list->with([
             'orderDetails',
             'notes',
@@ -98,7 +105,7 @@ class Order extends Model
             'createdBy',
             'orderShipping',])->get();
 
-        if ( request()->key != ''){
+        if ( request()->key != '' && $searchingInInvoice==false){
             $list = $list->filter(function($item) {
                 return strpos($item->orderShipping->name,  request()->key)!==false;
             });
