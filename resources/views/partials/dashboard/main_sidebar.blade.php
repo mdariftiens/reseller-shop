@@ -153,6 +153,7 @@
                                 <p>List</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="{{ route('product.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -161,15 +162,37 @@
                         </li>
                     </ul>
                 </li>
+
+
                 @endif
 
+                @if( auth()->user()->isCustomer())
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-database"></i>
+                            <p>
+                                Shop Setting
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('shop-setting.edit',1) }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Shop Setting</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
                             Order
 
-                            <span class="badge badge-info right">2</span>
+{{--                            <span class="badge badge-info right">2</span>--}}
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -180,29 +203,14 @@
                                 <p>List</p>
                             </a>
                         </li>
+                        @if( auth()->user()->isCustomer() )
                         <li class="nav-item">
                             <a href="{{ route('order.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add New</p>
                             </a>
                         </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
-                        <p>
-                            Shop Setting
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('shop-setting.edit',1) }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Shop Setting</p>
-                            </a>
-                        </li>
+                        @endif
                     </ul>
                 </li>
 

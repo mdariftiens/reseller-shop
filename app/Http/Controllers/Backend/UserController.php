@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Abstracts\Http\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CollectionRequest;
+use App\Models\Cat;
 use App\Models\Collection;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,7 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CollectionController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +24,9 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $list = Collection::collect();
+        $list = User::collect();
 
-        return view('dashboard.collection.index', compact('list'));
+        return view('dashboard.category.index', compact('list'));
     }
 
     /**
@@ -33,20 +36,20 @@ class CollectionController extends Controller
      */
     public function create()
     {
-        return view('dashboard.collection.create');
+        return view('dashboard.category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param CollectionRequest $request
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function store(CollectionRequest $request)
+    public function store(CategoryRequest $request)
     {
-        Collection::create( $request->validated());
+        Cat::create( $request->validated());
 
-        return redirect()->route('collection.index');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -63,54 +66,40 @@ class CollectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Collection $collection
+     * @param Cat $category
      * @return Application|Factory|View|Response
      */
-    public function edit(Collection $collection)
+    public function edit(Cat $category)
     {
-        return view('dashboard.collection.edit', compact('collection'));
+        return view('dashboard.category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param CollectionRequest $request
+     * @param CategoryRequest $request
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(CollectionRequest $request, $id): RedirectResponse
+    public function update(CategoryRequest $request, $id)
     {
+        Cat::where('id',$id)->update( $request->validated());
 
-        Collection::where('id',$id)->update( $request->validated());
-
-        return redirect()->route('collection.index');
+        return redirect()->route('category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Collection $collection
+     * @param Cat $category
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function destroy(Collection $collection)
+    public function destroy(Cat $category)
     {
-        $collection->delete();
 
-        return redirect()->route('collection.index');
-    }
+        $category->delete();
 
-    public function home()
-    {
-        $collections = Collection::enabled()->paginate();
-
-        return view('dashboard.collection.home', compact('collections'));
-    }
-
-    public function detail(Collection $collection)
-    {
-        $products = $collection->products;
-
-        return view('dashboard.collection.detail', compact('products'));
+        return redirect()->route('category.index');
     }
 }

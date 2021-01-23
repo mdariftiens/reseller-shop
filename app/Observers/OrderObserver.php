@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Abstracts\Observer;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
 class OrderObserver extends Observer
 {
@@ -42,31 +43,13 @@ class OrderObserver extends Observer
      * Handle the Order "updating" event.
      *
      * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function editing(Order $order)
-    {
-        //
-    }
-    /**
-     * Handle the Order "updated" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
-     */
-    public function edited(Order $order)
-    {
-        //
-    }
-    /**
-     * Handle the Order "updating" event.
-     *
-     * @param  \App\Models\Order  $order
-     * @return void
+     * @return bool
      */
     public function updating(Order $order)
     {
-        //
+        $user = auth()->user();
+
+        return $user->isAdmin() || $user->isManager() || $user->isDeliveryMan() || $order->created_by_user_id == $user->id;
     }
     /**
      * Handle the Order "updated" event.
@@ -76,7 +59,7 @@ class OrderObserver extends Observer
      */
     public function updated(Order $order)
     {
-        //
+        Log::error(__METHOD__);
     }
 
     /**

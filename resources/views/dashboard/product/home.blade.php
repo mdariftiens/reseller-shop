@@ -91,6 +91,19 @@
                 <li><a href="#">Load More</a></li>
             </ul>
 
+
+            <!-- Modal -->
+            <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" id="modal-container">
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
         </section>
         <!-- /.Left col -->
     </div>
@@ -104,6 +117,7 @@
 
 
     <script>
+
         $(document).ready(function() {
 
             $body = $('body');
@@ -203,6 +217,74 @@
 
             $body.on("click",'.btn-product',function (){
 
+                let url = "{{ route('product-detail','/') }}"
+                let id = $(this).data('id')
+                let $modalCotainer = $('#modal-container');
+
+                axios.get( url + '/' +id)
+                    .then(function (response) {
+
+                        let product  = response.data;
+                        console.log(product)
+
+
+                        let categories = [] ;
+
+                        product.categories.forEach(function (e){
+                            categories.push(e.name)
+                        });
+
+
+                        let productHtml =
+                        `    <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">${product.name} - ${product.code}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a class="btn btn-sm btn-success" download="img.png" href="https://api.jassreseller.com.bd/images/1588655803.png">Fb Image</a>
+                                    <img class="img-fluid" src="https://api.jassreseller.com.bd/images/1588655803.png" alt="">
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr><td><strong>Collection:</strong> <br>${product.collection.name}</td></tr>
+                                            <tr><td><strong>Category:</strong><br>${ categories.join(', ')}</td> </tr>
+                                            <tr><td><strong>Regular Price:</strong> ${product.regular_price} TK</td></tr>
+                                            <tr><td><strong>Offer Price:</strong> ${product.offer_price} TK</td><tr>
+                                            <tr><td><strong>Delivery Within Days:</strong> ${product.delivery_within_days}</td><tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                   <table class="table table-bordered">
+                                        <tbody>
+                                            <tr><td><strong>Description:</strong> <br>${product.description}</td></tr>
+                                            <tr><td><strong>Disclaimer:</strong> <br>${product.disclaimer}</td> </tr>
+                                        </tbody>
+                                    </table>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    `
+
+                        $modalCotainer.html( productHtml )
+
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+
+                $('#productModal').modal({})
             });
 
 

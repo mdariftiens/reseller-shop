@@ -10,6 +10,9 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderShipping;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\OrderAssignedToDeliveryManNotification;
+use App\Notifications\UserRegisteredNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -27,9 +31,11 @@ class OrderController extends Controller
      */
     public function index(): View
     {
-        $list = Order::with('orderDetails','notes','orderShipping','deliveryMan','createdBy')->collect();
+        $deliveryMans = User::getDeliveryMan()->pluck("name","id")->toArray();
 
-        return view('dashboard.order.index', compact('list'));
+        $list = Order::collect();
+
+        return view('dashboard.order.index', compact('list','deliveryMans'));
     }
 
     /**
@@ -59,6 +65,7 @@ class OrderController extends Controller
 
         $order = Order::create([
             'status' => 'ORDER_STATUS_NOT_ACCEPTED',
+            'invoice_number'=> auth()->id() . date('ymd-His'),
         ]);
 
         OrderShipping::create([
@@ -128,7 +135,9 @@ class OrderController extends Controller
             ->where('id', $id)
             ->first();
 
-        return view("dashboard.order.show", compact('order'));
+        $deliveryMans = User::getDeliveryMan()->pluck("name","id")->toArray();
+
+        return view("dashboard.order.show", compact('deliveryMans','order'));
 
     }
 
@@ -264,11 +273,29 @@ class OrderController extends Controller
      */
     public function changeStatus(Request $request, Order $order): JsonResponse
     {
-
         $order->status = $request->status;
         $order->save();
 
         return response()->json(['message'=>'Status Changed to ' . config('shop.order_status')[$request->status]]);
+    }
+
+    /**
+     * change Delivery Man the specified Order.
+     *
+     * @param Request $request
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function changeDeliveryMan(Request $request, Order $order): JsonResponse
+    {
+        $order->deliveryman_user_id = $request->deliveryman_user_id;
+        $order->save();
+
+        $deliveryman = User::find( $request->deliveryman_user_id);
+
+        $deliveryman->notify(new OrderAssignedToDeliveryManNotification( $order ));
+
+        return response()->json(['message'=>'Delivery man Changed ']);
     }
 
     public function pdfInvoice(Order $order)

@@ -11,14 +11,15 @@ class OrderAssignedToDeliveryManNotification extends Notification
 {
     use Queueable;
 
+    public $order;
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param $order
      */
-    public function __construct()
+    public function __construct($order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -29,14 +30,14 @@ class OrderAssignedToDeliveryManNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
@@ -55,7 +56,7 @@ class OrderAssignedToDeliveryManNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'message'=> 'Deliver Order #' . $this->order->invoice_number,
         ];
     }
 }

@@ -51,6 +51,16 @@ class User extends Authenticatable
     ];
 
 
+    public function scopeEnabled($query)
+    {
+        return $query->where('enabled', 1);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->where('enabled', 0);
+    }
+
     public function scopeInActive($query)
     {
         return $query->where('is_account_verified', 0);
@@ -146,7 +156,10 @@ class User extends Authenticatable
         return auth()->user()->type == self::SUBSCRIBER;
     }
 
-
+    public static function getDeliveryMan()
+    {
+        return self::enabled()->whereType(User::DELIVERY_MAN)->get();
+    }
 
 
 }

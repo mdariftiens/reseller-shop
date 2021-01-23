@@ -61,7 +61,7 @@ class UserRegisteredNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message'=> 'New Customer is registered. Verify ' . $this->user->name
+            'message'=> 'Verify New Registered Customer.'
         ];
     }
 }

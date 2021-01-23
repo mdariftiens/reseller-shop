@@ -14,24 +14,59 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-md-3">
 
                             <h3> Order Summary</h3>
                             <table class="table table-bordered">
                                 <tbody>
+
                                     <tr>
-                                        <th>Status</th>
                                         <td>
-                                            {{ Form::selectGroup('status', config('shop.order_status'), $order->status, '', ['class'=>'form-control status'],null, 'col-lg-12') }}
-                                            {{ Form::hidden('hidden_status', $order->status,['class'=>'hidden_status']) }}
-                                            {{ Form::submit('Change Status',['class'=>'btn btn-info btn-change-status']) }}
+                                            Invoice Number
+                                        </td>
+                                        <td>
+                                            {{$order->invoice_number}}
+                                            {{--{{ Form::textGroup('invoice_number',$order->invoice_number,'',['class'=>'col-md-12 form-control'])  }}--}}
                                         </td>
                                     </tr>
+
+                                    <tr>
+                                        <td>Status</td>
+                                        <td>
+                                            {{ config('shop.order_status')[$order->status]  }}
+                                        </td>
+                                    </tr>
+
+                                    @if( ! auth()->user()->isCustomer() && ($order->status != \App\Models\Order::ORDER_STATUS_RETURNED &&  $order->status != \App\Models\Order::ORDER_STATUS_DELIVERED &&  $order->status != \App\Models\Order::ORDER_STATUS_CANCEL)  )
+                                        <tr>
+                                            <td colspan="2">
+                                                {{ Form::selectGroup('status', config('shop.order_status_'. auth()->user()->type), $order->status, 'Status', ['class'=>'form-control status'],null, 'col-lg-12') }}
+                                                {{ Form::hidden('hidden_status', $order->status,['class'=>'hidden_status']) }}
+                                                {{ Form::submit('Change Status',['class'=>'btn btn-info btn-change-status']) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                @if( ! auth()->user()->isDeliveryMan() )
+                                                    {{ Form::selectGroup('deliveryMans', $deliveryMans,$order->deliveryman_user_id, 'Delivery Man', ['class'=>'form-control deliveryMans'],null, 'col-lg-12') }}
+                                                    {{ Form::hidden('hidden_deliveryMans', $order->deliveryman_user_id,['class'=>'hidden_deliveryMans']) }}
+                                                    @php
+                                                        $deliveryManLabel = 'Change Delivery Man'
+                                                    @endphp
+                                                    @if( $order->deliveryman_user_id == null )
+                                                        @php $deliveryManLabel = 'Set Delivery Man' @endphp
+                                                    @endif
+                                                    {{ Form::submit($deliveryManLabel,['class'=>'btn btn-info btn-change-delivery-man']) }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                     <tr>
                                         <th>Delivery Man:</th>
                                         <td>
-                                            {{ $order->deliveryMan->name }} <br>
-                                            {{ $order->deliveryMan->mobile }} <br>
+                                            {{ $order->deliveryMan->name ?? 'Not Assigned' }} <br>
+                                            {{ $order->deliveryMan->mobile  ?? 'Not Assigned' }} <br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -61,7 +96,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-6">
+
+                            @php
+                                $class = auth()->user()->isCustomer() ? 'col-md-9':'col-md-6';
+                            @endphp
+                        <div class="{{ $class }}">
                                     <h3> Products</h3>
                                     <table class="table table-bordered">
                                         <thead>
@@ -112,40 +151,51 @@
                                         </tbody>
 
                                     </table>
+
+
                                     <table class="table table-bordered">
                                         <tr>
                                             <td>
+                                                @can('update', $order)
                                                 <a  class="btn btn-warning" href="{{ route('order.edit',[$order->id]) }}"><i class="fa fa-edit"></i> Edit</a>
-                                                {{ Form::open(['url'=> route('order.destroy',$order->id), 'style' => 'display: initial','method'=>'POST']) }}
-                                                @method('DELETE')
-                                                {!! csrf_field() !!}
-                                                <button type="submit" class="btn btn-danger"/>Delete</button>
-                                                {{ Form::close() }}
+                                                @endcan
+                                                @can('delete', $order)
+                                                    {{ Form::open(['url'=> route('order.destroy',$order->id), 'style' => 'display: initial','method'=>'POST']) }}
+                                                    @method('DELETE')
+                                                    {!! csrf_field() !!}
+                                                    <button type="submit" class="btn btn-danger"/>Delete</button>
+                                                    {{ Form::close() }}
+                                                @endcan
+                                                <a  class="btn btn-warning" href="{{ route('order.index') }}"><i class="fa fa-list"></i> Orders</a>
                                             </td>
                                         </tr>
                                     </table>
-                        </div>
-                        <div class="col-3">
-                            <h3> Notes</h3>
-
-                            <ul class="list-group note-group" >
-                                @forelse($order->notes as $note)
-                                    <li class="list-group-item ">
-                                        <div class="text-gray">{{ $note->note }}</div> <br>- <span class="text-sm text-blue">{{ $note->created_at->diffForHumans() }}</span>
-                                    </li>
-
-                                @empty
-                                    <span class="text-center text-danger"> No Notes! </span>
-                                @endforelse
-                            </ul>
-                            <br>
-
-
-                                {{ Form::textareaGroup("note",null,"Note:",['class'=>'form-control'],null,'col-md-12') }}
-                                {{ Form::submit('Save Note',['class'=>'btn btn-info btn-note']) }}
-
 
                         </div>
+
+                        @if( ! auth()->user()->isCustomer())
+                            <div class="col-md-3">
+                                <h3> Notes</h3>
+
+                                <ul class="list-group note-group" >
+                                    @forelse($order->notes as $note)
+                                        <li class="list-group-item ">
+                                            <div class="text-gray">{{ $note->note }}</div> <br>- <span class="text-sm text-blue">{{ $note->created_at->diffForHumans() }}</span>
+                                        </li>
+                                    @empty
+                                        <span class="text-center text-danger"> No Notes! </span>
+                                    @endforelse
+                                </ul>
+                                <br>
+
+                                @if( $order->status != \App\Models\Order::ORDER_STATUS_RETURNED &&  $order->status != \App\Models\Order::ORDER_STATUS_DELIVERED &&  $order->status != \App\Models\Order::ORDER_STATUS_CANCEL  )
+                                    {{ Form::textareaGroup("note",null,"Note:",['class'=>'form-control'],null,'col-md-12') }}
+                                    {{ Form::submit('Save Note',['class'=>'btn btn-info btn-note']) }}
+                                @endif
+
+
+                            </div>
+                        @endif
                     </div>
 
                 </div>
@@ -229,6 +279,35 @@
                         // always executed
                     });
             })
+            //btn-change-delivery-man deliveryMans
+            $body.on('click','.btn-change-delivery-man',function (){
+
+                let hidden_deliveryMans = $('.hidden_deliveryMans').val();
+
+                let f = {};
+                f.deliveryman_user_id = $('.deliveryMans').val()
+
+                if ( hidden_deliveryMans == f.deliveryman_user_id.trim() ){
+                    toastr.error("Delivery Man Not Changed");
+                    return;
+                }
+                axios.put('{{ route('order.changeDeliveryMan',$order->id) }}', f)
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+
+                        toastr.success( response.data.message)
+                    })
+                    .catch(function (error) {
+
+                        let errorMessage = '';
+                        toastr.error(errorMessage)
+
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            })
 
         });
 
@@ -238,4 +317,11 @@
 
 @endpush
 
+@push('head_end_style')
+    <style rel="stylesheet" >
+       table .btn{
+           margin-top: 5px;
+       }
+    </style>
+@endpush
 
