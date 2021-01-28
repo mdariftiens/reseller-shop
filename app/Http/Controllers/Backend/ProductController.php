@@ -112,8 +112,11 @@ class ProductController extends Controller
 
         $product->load('categories', 'collection','media');
 
-        $productFbImageUrl = $product->getMedia(['fb-image',])->first()?$product->getMedia(['fb-image',])->first()->getUrl():'';
-        $productImageUrl = $product->getMedia(['image'])->first()?$product->getMedia(['image'])->first()->getUrl():'';
+        $fbMedia = $product->getMedia(['fb-image',])->first();
+        $media = $product->getMedia(['image'])->first();
+
+        $productFbImageUrl = $fbMedia? $fbMedia->getUrl():'';
+        $productImageUrl = $media ? $media->getUrl():'';
 
 
         $collections = Collection::enabled()->get()->pluck("name","id")->toArray();
@@ -166,7 +169,7 @@ class ProductController extends Controller
             'offer_price' => $request->offer_price,
             'delivery_within_days' => $request->delivery_within_days,
         ] );
-        $product->save();
+
 
         return redirect()->route('product.index');
     }
