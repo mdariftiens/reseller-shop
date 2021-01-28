@@ -16,12 +16,12 @@
                 <div class="card-body">
 
 
-                    {{ Form::open( ['url'=>route('collection.store'),'method'=>'POST']) }}
+                    {{ Form::open( ['url'=>route('collection.store'),'method'=>'POST','enctype'=>"multipart/form-data"]) }}
 
                     {{ Form::textGroup('name',null,'Name',['class'=>'form-control','placeholder'=>'Enter your Name.'] ) }}
                     {{ Form::textareaGroup('description',null ,'Description.',['required'=>'','class'=>'form-control','placeholder'=>'Description of Collection'] ) }}
                     {{ Form::checkboxGroup('enabled','0' ,'Enabled',['required'=>'','class'=>'form-control'] ) }}
-
+                    {{ Form::fileGroup("image","Image",['required'=>'',]) }}
                     {{ Form::submit("Save",['class'=>'btn btn-sm btn-success']) }}
                     {{ Form::close() }}
 

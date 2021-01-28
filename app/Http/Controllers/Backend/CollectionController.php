@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Plank\Mediable\Facades\MediaUploader;
 
 class CollectionController extends Controller
 {
@@ -44,7 +45,17 @@ class CollectionController extends Controller
      */
     public function store(CollectionRequest $request)
     {
-        Collection::create( $request->validated());
+        $collection = Collection::create( $request->validated());
+
+        if ( $request->hasFile('image')){
+            $file = $request->file('image');
+
+            $media = MediaUploader::fromSource($file)
+                ->toDestination('public', 'image')
+                ->upload();
+
+            $collection->attachMedia($media, ['image']);
+        }
 
         return redirect()->route('collection.index');
     }
@@ -68,7 +79,9 @@ class CollectionController extends Controller
      */
     public function edit(Collection $collection)
     {
-        return view('dashboard.collection.edit', compact('collection'));
+        $media = $collection->getMedia('image')->first();
+        $collectionURL = $media ? $media->getUrl() : '';
+        return view('dashboard.collection.edit', compact('collection','collectionURL'));
     }
 
     /**
@@ -81,7 +94,19 @@ class CollectionController extends Controller
     public function update(CollectionRequest $request, $id): RedirectResponse
     {
 
-        Collection::where('id',$id)->update( $request->validated());
+        $collection = Collection::find( $id );
+
+        $collection->update( $request->validated());
+
+        if ( $request->hasFile('image')){
+            $file = $request->file('image');
+
+            $media = MediaUploader::fromSource($file)
+                ->toDestination('public', 'image')
+                ->upload();
+
+            $collection->syncMedia($media, ['image']);
+        }
 
         return redirect()->route('collection.index');
     }

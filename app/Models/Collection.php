@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Abstracts\Model;
+use Plank\Mediable\Mediable;
 
 class Collection extends Model
 {
+    use Mediable;
+
     protected $fillable = [
         'name',
         'enabled',
