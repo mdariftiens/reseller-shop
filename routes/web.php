@@ -30,7 +30,7 @@ Route::get('/reseller', [App\Http\Controllers\Frontend\ResellerController::class
 Route::get('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'create'])->name('register');
 Route::post('/register', [App\Http\Controllers\Frontend\RegisterUserController::class, 'store'])->name('register.store');
 
-Route::get('get-sub-cat-with-products/{categoryId}',[ProductController::class,'subCatNProducts'])->name('get-sub-cat-with-products');
+Route::get('get-products-of-a-collection/{collection}',[ProductController::class,'getProductsOfACollection'])->name('get-products-of-a-collection');
 Route::get('get-product-detail/{productId}',[ProductController::class,'productDetail'])->name('product-detail');
 Route::get('image-download',[ProductController::class,'imageDownload']);
 

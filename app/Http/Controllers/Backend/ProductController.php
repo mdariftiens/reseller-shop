@@ -206,9 +206,11 @@ class ProductController extends Controller
 //            ->whereIn('parent_id',[1,2])
             ->get();
 
-        $products = Product::enabled()->paginate(50);
+        $collections = Collection::with('media')->enabled()->get();
 
-        return view('dashboard.product.home', compact('products','categories'));
+        $products = Product::with('media')->enabled()->paginate(50);
+
+        return view('dashboard.product.home', compact('products','categories', 'collections'));
     }
 
     public function detail(Product $product)
@@ -218,21 +220,17 @@ class ProductController extends Controller
         return view('dashboard.product.detail', compact('products'));
     }
 
-    public function subCatNProducts($categoryId): JsonResponse
+    public function getProductsOfACollection($collection): JsonResponse
     {
-        $subCategories = Cat::enabled()
-            ->where('parent_id', $categoryId)
-            ->get();
+        $collection = Collection::where('id', $collection)->with('products')->first();
 
-        $catWithProducts = Cat::with('products')->where('id', $categoryId)->first();
+        $products = null;
 
-        if ( $catWithProducts->whereHas('products')){
-            $products = $catWithProducts->products;
-        }else{
-            $products = null;
+        if ( $collection->whereHas('products')){
+            $products = $collection->products;
         }
 
-        return response()->json(['subCategories' => $subCategories, 'products'=>$products]);
+        return response()->json(['products'=>$products]);
 
     }
 
