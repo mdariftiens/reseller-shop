@@ -29,8 +29,7 @@
                         </div>
                         <div class="col-md-6">
                             Image
-                            {{ $collectionURL }}
-                            <img src="{{ $collectionURL }}" alt="">
+                            <img src="{{ $collectionURL }}" class="img-fluid" alt="">
                         </div>
                     </div>
 
