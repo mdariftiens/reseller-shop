@@ -85,5 +85,13 @@ class FormControlProvider extends ServiceProvider
             'col' => 'col-md-6',
         ]);
 
+        Form::component('fileGroup', 'partials.form.file_group', [
+            'name',
+            'label'=>'',
+            'attributes' => [],
+            'icon'=> null,
+            'col' => 'col-md-6',
+        ]);
+
     }
 }

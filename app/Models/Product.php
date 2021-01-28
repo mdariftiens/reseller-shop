@@ -5,21 +5,16 @@ namespace App\Models;
 use App\Abstracts\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Plank\Mediable\Mediable;
 
 class Product extends Model
 {
+    use Mediable;
 
     protected $fillable = [
-        'name',
-        'code',
-        'description',
-        'enabled',
-        'collection_id',
-        'regular_price',
-        'offer_price',
-        'delivery_within_days',
     ];
 
+    protected $guarded = [];
 
     public function categories(): BelongsToMany
     {
@@ -31,5 +26,19 @@ class Product extends Model
         return $this->belongsTo(Collection::class);
     }
 
+    /**
+     * Get the current balance.
+     *
+     * @return string
+     */
+    public function getFbImageAttribute($value)
+    {
+        if (!empty($value) && !$this->hasMedia('fb-image')) {
+            return $value;
+        } elseif (!$this->hasMedia('fb-image')) {
+            return false;
+        }
 
+        return $this->getMedia('fb-image')->last();
+    }
 }

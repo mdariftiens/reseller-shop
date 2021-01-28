@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,10 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            'name'=>'required|unique:' . Product::class . ',name',
-            'code'=>'required|unique:' . Product::class . ',code',
+            'name'=>'required|unique:' . Product::class . ',name,'.request('product_id'),
+            'code'=>'required|unique:' . Product::class . ',code,' . request('product_id'),
             'description'=>'required',
             'enabled' =>'bail|required',
             'category' =>'bail|required|array',
@@ -34,7 +35,8 @@ class ProductRequest extends FormRequest
             'regular_price' =>'bail|required|numeric',
             'offer_price' =>'bail|required|numeric|max:'.request('regular_price',0),
             'delivery_within_days' =>'bail|required|numeric',
-            'fb-image'=>'bail|required'
+            'fb-image'=>'bail|nullable',
+            'image'=>'bail|nullable'
         ];
     }
 }

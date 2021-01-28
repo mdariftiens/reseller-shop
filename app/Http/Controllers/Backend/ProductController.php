@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Abstracts\Http\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Cat;
 use App\Models\CatProduct;
 use App\Models\Collection;
@@ -14,6 +15,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Plank\Mediable\Facades\MediaUploader;
+use Plank\Mediable\Media;
 
 class ProductController extends Controller
 {
@@ -50,11 +53,24 @@ class ProductController extends Controller
      * @param ProductRequest $request
      * @return Response
      */
-    public function store(ProductRequest $request): Response
+    public function store(ProductRequest $request): RedirectResponse
     {
+
+        $file = $request->file('fb-image');
+
+        $media = MediaUploader::fromSource($file)
+            ->toDestination('public', 'image')
+            ->upload();
+
+        $file1 = $request->file('image');
+
+        $media1 = MediaUploader::fromSource($file1)
+            ->toDestination('public', 'image')
+            ->upload();
 
         $product = Product::create( [
             'name'=> $request->name,
+            'code'=> $request->code,
             'description'=> $request->description,
             'enabled' => $request->enabled,
             'collection_id' => $request->collection,
@@ -62,6 +78,10 @@ class ProductController extends Controller
             'offer_price' => $request->offer_price,
             'delivery_within_days' => $request->delivery_within_days,
         ] );
+
+
+        $product->attachMedia($media, ['fb-image']);
+        $product->attachMedia($media1, ['image']);
 
         $product->categories()->sync(request('category',null));
 
@@ -90,11 +110,15 @@ class ProductController extends Controller
 
         $categories = Cat::orderBy('name')->get()->pluck("name",'id')->toArray();
 
-        $product->load('categories', 'collection');
+        $product->load('categories', 'collection','media');
+
+        $productFbImageUrl = $product->getMedia(['fb-image',])->first()?$product->getMedia(['fb-image',])->first()->getUrl():'';
+        $productImageUrl = $product->getMedia(['image'])->first()?$product->getMedia(['image'])->first()->getUrl():'';
+
 
         $collections = Collection::enabled()->get()->pluck("name","id")->toArray();
 
-        return view("dashboard.product.edit", compact('product','collections','categories'));
+        return view("dashboard.product.edit", compact('product','collections','categories','productFbImageUrl','productImageUrl'));
     }
 
     /**
@@ -104,8 +128,33 @@ class ProductController extends Controller
      * @param Product $product
      * @return RedirectResponse
      */
-    public function update(ProductRequest $request,Product $product)
+    public function update(ProductUpdateRequest $request,Product $product)
     {
+
+        if ( $request->hasFile('fb-image')){
+
+            $file = $request->file('fb-image');
+
+            $media = MediaUploader::fromSource($file)
+                ->toDestination('public', 'image')
+                ->upload();
+
+            $product->syncMedia($media, ['fb-image']);
+
+        }
+
+        if ( $request->hasFile('image')){
+
+            $file = $request->file('image');
+
+            $media = MediaUploader::fromSource($file)
+                ->toDestination('public', 'image')
+                ->upload();
+
+            $product->syncMedia($media, ['image']);
+
+        }
+
         $product->categories()->sync(request('category',null));
 
         $product->update( [

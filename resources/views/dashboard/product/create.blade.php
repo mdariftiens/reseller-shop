@@ -16,18 +16,20 @@
                 <!-- /.card-header -->
                 <div class="card-body">
 
-                    {{ Form::open( ['url'=>route('product.store'),'method'=>'POST']) }}
+                    {{ Form::open( ['url'=>route('product.store'),'method'=>'POST','enctype'=>"multipart/form-data"]) }}
 
                     {{ Form::textGroup('name',null,'Name',['class'=>'form-control','placeholder'=>'Enter Product Name.'] ) }}
+                    {{ Form::textGroup('code',null,'Code',['class'=>'form-control','placeholder'=>'Enter Product Code.'] ) }}
                     {{ Form::textareaGroup('description',null,'Description.',['required'=>'','class'=>'form-control','placeholder'=>'Description of Collection'] ) }}
                     {{ Form::numberGroup('regular_price',0.00,'Regular Price',['class'=>'form-control','placeholder'=>'Enter Product Name.'] ) }}
                     {{ Form::numberGroup('offer_price',0.00,'Offer Price',['class'=>'form-control','placeholder'=>'Enter Product Name.'] ) }}
                     {{ Form::numberGroup('delivery_within_days',3,'Delivery Within Days',['class'=>'form-control','placeholder'=>'Enter Product Name.'] ) }}
 
-                    {{ Form::selectGroup('collection',$collections,null,"Select Collection",'',['class'=>'form-control select2','required'=>'required']) }}
-                    {{ Form::selectGroup('category[]',$categories,null,"Select Category",'',['class'=>'form-control select2','multiple'=>'multiple','required'=>'required']) }}
+                    {{ Form::selectGroup('collection',$collections,[],"Select Collection",['class'=>'form-control select2','required'=>'required']) }}
+                    {{ Form::selectGroup('category[]',$categories,[],"Select Category", ['class'=>'form-control select2','multiple'=>'multiple','required'=>'required']) }}
                     {{ Form::checkboxGroup('enabled',null ,'Enabled',['required'=>'','class'=>'form-control'] ) }}
-
+                    {{ Form::fileGroup("fb-image","Fb Image",['required'=>'',]) }}
+                    {{ Form::fileGroup("image","Image",['required'=>'',]) }}
 
                     {{ Form::submit("Save",['class'=>'btn btn-sm btn-success']) }}
                     {{ Form::close() }}
