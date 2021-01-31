@@ -68,6 +68,7 @@ Route::middleware('auth')->prefix('backend')->group(function(){
 
     Route::resource('shop-setting', App\Http\Controllers\Backend\ShopSettingController::class);
 
+    Route::get('my-payments', [App\Http\Controllers\Backend\MyPaymentController::class,'index'])->name('my-payments');
 
 });
 

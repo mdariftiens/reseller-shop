@@ -185,6 +185,15 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="{{ route('my-payments') }}" class="nav-link">
+                            <i class="nav-icon fas fa-database"></i>
+                            <p>
+                                My Payments
+                            </p>
+                        </a>
+                    </li>
+
                 @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
