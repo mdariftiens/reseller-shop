@@ -48,6 +48,8 @@ class CategoryController extends Controller
     {
         Cat::create( $request->validated());
 
+
+
         return redirect()->route('category.index');
     }
 

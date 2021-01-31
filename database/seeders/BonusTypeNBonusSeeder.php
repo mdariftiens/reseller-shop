@@ -40,7 +40,7 @@ class BonusTypeNBonusSeeder extends Seeder
             $creatorId = User::where('type','admin')->inRandomOrder()->first()->id;
 
             Bonus::create([
-                'customer_user_id' => $customerUserId,
+                'shopsetting_id' => $customerUserId,
                 'bonus_type_id' => $faker->numberBetween(1, count($bonusTypes) - 1),
                 'description' => $faker->paragraph,
                 'amount' => $faker->numberBetween(50,500),

@@ -70,6 +70,10 @@ Route::middleware('auth')->prefix('backend')->group(function(){
 
     Route::get('my-payments', [App\Http\Controllers\Backend\MyPaymentController::class,'index'])->name('my-payments');
 
+    Route::resource('shop', App\Http\Controllers\Backend\ShopController::class);
+    Route::resource('bonus', App\Http\Controllers\Backend\BonusController::class);
+
+
 });
 
 

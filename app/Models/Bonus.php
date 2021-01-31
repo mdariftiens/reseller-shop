@@ -9,7 +9,7 @@ class Bonus extends Model
     protected $table = 'bonus';
 
     protected $fillable = [
-        'customer_user_id',
+        'shopsetting_id',
         'bonus_type_id',
         'description',
         'amount',

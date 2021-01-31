@@ -163,6 +163,14 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('shop.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-database"></i>
+                        <p>
+                            Shop
+                        </p>
+                    </a>
+                </li>
 
                 @endif
 
@@ -193,6 +201,7 @@
                             </p>
                         </a>
                     </li>
+
 
                 @endif
                 <li class="nav-item">

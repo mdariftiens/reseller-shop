@@ -15,7 +15,7 @@ class CreateBonusTable extends Migration
     {
         Schema::create('bonus', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_user_id');
+            $table->unsignedBigInteger('shopsetting_id');
             $table->unsignedBigInteger('bonus_type_id');
             $table->text('description');
             $table->float('amount');
@@ -26,7 +26,6 @@ class CreateBonusTable extends Migration
             $table->softDeletes();
 
             $table->foreign('bonus_type_id')->references('id')->on('bonus_types');
-            $table->foreign(['customer_user_id'])->references('id')->on('users');
             $table->foreign(['created_by_user_id'])->references('id')->on('users');
             $table->foreign(['updated_by_user_id'])->references('id')->on('users');
 

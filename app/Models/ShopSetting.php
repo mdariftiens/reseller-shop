@@ -11,4 +11,11 @@ class ShopSetting extends Model
     protected $guarded =[
 
     ];
+
+    protected $with = ['customer'];
+
+    public function customer()
+    {
+        return $this->hasOne( User::class,'id','user_id');
+    }
 }
